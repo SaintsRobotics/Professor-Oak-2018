@@ -1,4 +1,4 @@
-package com.saintsrobotics.hickoryhumpcamel.output;
+package com.saintsrobotics.hickoryhumpcamel.input;
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.I2C.Port;
 
