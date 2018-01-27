@@ -8,6 +8,7 @@ public class TurnToHeadingTask extends Task {
 	public TurnToHeadingTask(double heading) {
 		this.heading = heading;
 	}
+	
 	@Override
 	protected void runTask() {
 		// TODO Auto-generated method stub

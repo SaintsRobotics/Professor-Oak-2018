@@ -10,6 +10,7 @@ public class ForwardAtHeadingTask extends Task {
 		this.heading = heading;
 		this.distance = distance;
 	}
+	
 	@Override
 	protected void runTask() {
 		// TODO Auto-generated method stub
