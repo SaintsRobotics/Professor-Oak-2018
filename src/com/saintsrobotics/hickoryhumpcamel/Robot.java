@@ -15,7 +15,7 @@ public class Robot extends TaskRobot {
   protected Task[] teleopTasks = {};
   protected Task[] testTasks = {};
   protected Task[] disabledTasks = {};
-  
+
   public OI oi;
   public Flags flags;
 }
