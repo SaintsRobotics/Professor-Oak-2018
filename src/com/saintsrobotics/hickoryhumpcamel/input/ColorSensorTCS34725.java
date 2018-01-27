@@ -20,7 +20,6 @@ public class ColorSensorTCS34725 {
 
   public ColorSensorTCS34725(Port port) {
     this.i2c = new I2C(port, DEVICE_ADDRESS);
-
   }
 
   // write sleep method to get rid of try-catch stuff

@@ -5,7 +5,7 @@ import java.util.Map;
 import com.github.dozer.output.Servo;
 
 public class Servos {
-	public Servo leftWing;
-	public Servo rightWing;
-	public Servo lifter;
+  public Servo leftWing;
+  public Servo rightWing;
+  public Servo lifter;
 }
