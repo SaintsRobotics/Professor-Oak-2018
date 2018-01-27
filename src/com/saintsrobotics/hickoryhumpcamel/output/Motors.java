@@ -1,24 +1,24 @@
 package com.saintsrobotics.hickoryhumpcamel.output;
 
-import java.util.HashMap;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 import java.lang.reflect.*;
 import com.github.dozer.output.*;
 
 public abstract class Motors {
-  private LinkedList<MotorRamping> rampedMotors;
-  private LinkedList<Motor> motors;
+  private List<MotorRamping> rampedMotors;
+  private List<Motor> motors;
+  
   public Motors() {
-	  int length = this.getClass().getDeclaredFields().length;
-	  this.motors = new LinkedList<>();
+	  Field[] declaredFields = getClass().getDeclaredFields();
+	  this.motors = new ArrayList<>(declaredFields.length);
 	  try {
-		for(Field f : this.getClass().getDeclaredFields()) {
+		for(Field f : declaredFields) {
 		  Object obj = f.get(this);
 		  if(obj instanceof Motor) {
-			this.motors.addLast((Motor)obj);
+			this.motors.add((Motor)obj);
 			if(obj instanceof MotorRamping) {
-			  this.rampedMotors.addLast((MotorRamping) obj);
+			  this.rampedMotors.add((MotorRamping) obj);
 			}
 		  }
 		}
