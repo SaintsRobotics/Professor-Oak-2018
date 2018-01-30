@@ -14,14 +14,14 @@ public class LiftTask extends RunEachFrameTask {
         double Leftamount = Robot.instance.oi.xboxInput.leftTrigger(); 
         double currentAmount = Robot.instance.servos.lifter.getAngle();
         long currentTime = System.currentTimeMillis();
-        long timeDifference = currentTime-startTime;
+        long DifferentTime = currentTime-startTime;
         if (Rightamount > 0) {
         
-        Robot.instance.servos.lifter.setPosition(currentAmount+Rightamount*timeDifference);
+        Robot.instance.servos.lifter.setPosition(currentAmount+Rightamount*DifferentTime);
         	
         }
         if (Leftamount > 0) {
-        	Robot.instance.servos.lifter.setPosition(currentAmount-Leftamount*timeDifference);
+        	Robot.instance.servos.lifter.setPosition(currentAmount-Leftamount*DifferentTime);
         }
         	}
     	startTime = currentTime;
