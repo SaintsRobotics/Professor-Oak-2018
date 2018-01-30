@@ -5,7 +5,11 @@ import com.github.dozer.coroutine.helpers.RunEachFrameTask;
 
 
 public class LiftTask extends RunEachFrameTask {
-    private long startTime = System.currentTimeMillis();
+    private long startTime;
+    
+    public LiftTask() {
+    	this.startTime = System.currentTimeMillis();
+    }
    
     
     @Override
@@ -14,16 +18,17 @@ public class LiftTask extends RunEachFrameTask {
         double Leftamount = Robot.instance.oi.xboxInput.leftTrigger(); 
         double currentAmount = Robot.instance.servos.lifter.getAngle();
         long currentTime = System.currentTimeMillis();
-        long DifferentTime = currentTime-startTime;
+        long timeDifference = currentTime-startTime;
         if (Rightamount > 0) {
         
-        Robot.instance.servos.lifter.setPosition(currentAmount+Rightamount*DifferentTime);
+        Robot.instance.servos.lifter.setPosition(currentAmount+Rightamount*timeDifference);
         	
         }
         if (Leftamount > 0) {
-        	Robot.instance.servos.lifter.setPosition(currentAmount-Leftamount*DifferentTime);
+        	Robot.instance.servos.lifter.setPosition(currentAmount-Leftamount*timeDifference);
         }
-        	}
-    	startTime = currentTime;
+        	
+    	this.startTime = currentTime;
     
+}
 }
