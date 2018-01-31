@@ -3,6 +3,10 @@ package com.saintsrobotics.hickoryhumpcamel;
 import com.github.dozer.TaskRobot;
 import com.github.dozer.coroutine.Task;
 import com.saintsrobotics.hickoryhumpcamel.input.OI;
+import com.saintsrobotics.hickoryhumpcamel.output.*;
+import com.saintsrobotics.hickoryhumpcamel.task.auton.TheShuffle;
+import com.saintsrobotics.hickoryhumpcamel.task.teleop.ArcadeDrive;
+
 /**
  * The VM is configured to automatically run this class, and to call the
  * functions corresponding to each mode, as described in the IterativeRobot
@@ -11,11 +15,21 @@ import com.saintsrobotics.hickoryhumpcamel.input.OI;
  * directory.
  */
 public class Robot extends TaskRobot {
-  protected Task[] autonomousTasks = {};
-  protected Task[] teleopTasks = {};
-  protected Task[] testTasks = {};
-  protected Task[] disabledTasks = {};
-
+  
+  public TestMotors motors;
   public OI oi;
   public Flags flags;
+  
+  public static Robot instance;
+  
+  @Override
+  public void robotInit() {
+    this.oi = new OI();
+    this.motors = new SetTestMotors();
+    this.motors.init();
+    this.flags = new Flags();
+    Robot.instance = this;
+    this.autonomousTasks =  new Task[]{new TheShuffle()};
+    this.teleopTasks = new Task[]{new ArcadeDrive()};
+  }
 }
