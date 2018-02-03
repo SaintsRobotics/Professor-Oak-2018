@@ -19,12 +19,12 @@ public class LiftTask extends RunEachFrameTask {
         double currentAmount = Robot.instance.servos.lifter.getAngle();
         long currentTime = System.currentTimeMillis();
         long timeDifference = currentTime-startTime;
-        if (Rightamount > 0) {
+        if (Rightamount > 0 && Robot.instance.sensors.lifterUp.get() != true) {
         
         Robot.instance.servos.lifter.setPosition(currentAmount+Rightamount*timeDifference);
         	
         }
-        if (Leftamount > 0) {
+        if (Leftamount > 0 && Robot.instance.sensors.lifterDown.get() != true) {
         	Robot.instance.servos.lifter.setPosition(currentAmount-Leftamount*timeDifference);
         }
         	
