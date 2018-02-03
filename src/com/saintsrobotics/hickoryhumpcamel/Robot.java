@@ -3,6 +3,7 @@ package com.saintsrobotics.hickoryhumpcamel;
 import com.github.dozer.TaskRobot;
 import com.github.dozer.coroutine.Task;
 import com.saintsrobotics.hickoryhumpcamel.input.OI;
+import com.saintsrobotics.hickoryhumpcamel.input.Sensors;
 import com.saintsrobotics.hickoryhumpcamel.output.Servos;
 import com.saintsrobotics.hickoryhumpcamel.output.TestMotors;
 /**
@@ -24,4 +25,5 @@ public class Robot extends TaskRobot {
   public Flags flags;
   public TestMotors motors;
   public Servos servos;
+  public Sensors sensors;
 }
