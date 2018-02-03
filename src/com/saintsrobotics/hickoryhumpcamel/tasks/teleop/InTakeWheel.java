@@ -8,7 +8,7 @@ public class InTakeWheel extends RunEachFrameTask {
 
     @Override
     protected void runEachFrame() {
-        boolean trig = Robot.instance.oi.xboxInput.Y();
+        boolean trig = Robot.instance.oi.xboxInput.RB();
         
         while(Robot.instance.sensors.intake.get() != true && trig) {
         	Robot.instance.motors.intake.set(0.1);
