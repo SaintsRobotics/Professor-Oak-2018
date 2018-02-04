@@ -13,8 +13,6 @@ public class ForwardAtHeadingTask extends Task {
 
   @Override
   protected void runTask() {
-    // TODO Auto-generated method stub
-
+    
   }
-
 }
