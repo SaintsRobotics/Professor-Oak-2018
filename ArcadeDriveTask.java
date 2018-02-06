@@ -1,7 +1,7 @@
-package com.saintsrobotics.corebot.tasks.teleop;
+package com.saintsrobotics.hickoryhumpcamel.tasks.teleop;
 
-import com.saintsrobotics.corebot.Robot;
-import com.saintsrobotics.corebot.coroutine.RunEachFrameTask;
+import com.saintsrobotics.hickoryhumpcamel.Robot;
+import com.saintsrobotics.hickoryhumpcamel.coroutine.RunEachFrameTask;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class ArcadeDriveTask extends RunEachFrameTask {
