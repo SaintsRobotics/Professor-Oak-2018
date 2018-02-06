@@ -1,0 +1,52 @@
+package com.saintsrobotics.hickoryhumpcamel.tasks.teleop;
+
+import com.saintsrobotics.hickoryhumpcamel.Robot;
+import com.saintsrobotics.hickoryhumpcamel.coroutine.RunEachFrameTask;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
+public class ArcadeDriveTask extends RunEachFrameTask {
+
+    private double forwardMultiplier = 1;
+    private double turnMultiplier = 0.8;
+    
+
+    @Override
+    protected void runEachFrame() {
+        if (Robot.oi.drive.A()) {
+            turnMultiplier = Math.max(0, turnMultiplier - 0.015625);
+        } else if (Robot.oi.drive.B()) {
+            turnMultiplier = Math.min(1, turnMultiplier + 0.015625);
+        }
+        
+        if (Robot.oi.drive.X()) {
+            forwardMultiplier = Math.max(0, forwardMultiplier - 0.015625);
+        } else if (Robot.oi.drive.Y()) {
+            forwardMultiplier = Math.min(1, forwardMultiplier + 0.015625);
+        }
+        
+
+        double forward = -Robot.oi.drive.leftStickY() * forwardMultiplier;
+        double turn = Robot.oi.drive.rightStickX() * turnMultiplier;
+        
+                
+        double minForward = Robot.prefs.getDouble("drive_scaling_forward_min", 0);
+        double maxForward = Robot.prefs.getDouble("drive_scaling_forward_max", 1);
+        double minTurn = Robot.prefs.getDouble("drive_scaling_turn_min", 0);
+        double maxTurn = Robot.prefs.getDouble("drive_scaling_turn_max", 1);
+        
+        double scalingForward = 1-Math.abs(forward);
+        if (scalingForward < minForward) scalingForward = minForward;
+        if (scalingForward > maxForward) scalingForward = maxForward;
+        
+        double scalingRatio = (scalingForward - minForward) / (maxForward - minForward);
+        double turnScaling = minTurn + scalingRatio * (maxTurn - minTurn);
+        
+        turn *= turnScaling;
+        
+     
+        if (!Robot.flags.disableDrive) {
+            Robot.motors.leftDrive.set(forward + turn);
+            Robot.motors.rightDrive.set(forward - turn);
+        }
+    }
+}
