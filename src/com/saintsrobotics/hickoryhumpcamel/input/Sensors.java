@@ -16,5 +16,12 @@ public abstract class Sensors {
     public Encoder leftEncoder;
     public AveragePIDSources average;
     
+    public DigitalInput wingsLeftDown;
+	public DigitalInput wingsRightDown;
+	public DigitalInput wingsLeftUp;
+	public DigitalInput wingsRightUp;
+	public Encoder wingsLeft;
+	public Encoder wingsRight;
+    
 	public abstract void init();
 }
