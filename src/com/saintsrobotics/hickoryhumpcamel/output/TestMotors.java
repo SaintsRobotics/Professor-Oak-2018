@@ -7,6 +7,8 @@ public class TestMotors extends Motors {
   public Motor rightDrive;
   public Motor intake;
   public Motor lifter;
+  public Motor leftWing;
+  public Motor rightWing;
   @Override
   public void init() {
     // TODO Auto-generated method stub
