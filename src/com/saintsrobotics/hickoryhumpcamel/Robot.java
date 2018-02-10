@@ -39,6 +39,7 @@ public class Robot extends TaskRobot {
   public void robotInit() {
     Robot.instance = this;
     this.oi = new OI();
+    
     this.motors = new SetTestMotors();
     this.motors.init();
     this.flags = new Flags();
@@ -50,29 +51,25 @@ public class Robot extends TaskRobot {
   
   @Override
   public void autonomousInit() {
+	this.sensors.leftEncoder.reset();
+	this.sensors.rightEncoder.reset();
+	this.sensors.gyro.reset();
     this.autonomousTasks =  new Task[]{
-        new RunSequentialTask(
-            new ForwardAtHeadingTask(0, 232 * 2, this.forwardPidConfig),
+        /*new RunSequentialTask(*/
+            new ForwardAtHeadingTask(0, 232 * 2, this.forwardPidConfig)/*,
             new TurnToHeadingTask(45, this.turnPidConfig),
             new ForwardAtHeadingTask(0, 232 * 3, this.forwardPidConfig),
             new TurnToHeadingTask(-45, this.turnPidConfig),
             new ForwardAtHeadingTask(0, 232 * 4.486, this.forwardPidConfig)
-        )};
+        )*/};
     super.autonomousInit();
   }
   
   @Override
   public void teleopInit() {
     this.teleopTasks = new Task[]{
-        new RunSequentialTask(
-            new RunEachFrameTask() {
-              @Override
-              public void runEachFrame() {
-                SmartDashboard.putNumber("LY", oi.xboxInput.leftStickY());
-                SmartDashboard.putNumber("RX", oi.xboxInput.rightStickX());
-              }
-            }
-        )};
+    		new ArcadeDrive()
+    };
     super.teleopInit();
   }
 }

@@ -27,18 +27,21 @@ public class PIDConfiguration {
     this.turnHeadingKD = 0.08;
     
     this.turnHeadingTolerance = 1;
+    this.gyro = gyro;
     
   }
   
   public PIDConfiguration(PIDSource gyro, PIDSource average) {
     this.forwardDistanceKP = 0.005;
-    this.forwardDistanceKI = 0.0006;
-    this.forwardDistanceKD = 0.08;
+    this.forwardDistanceKI = 0.0003;
+    this.forwardDistanceKD = 0.06;
     this.forwardHeadingKP = 0.0025;
     this.forwardHeadingKI = 0;
     this.forwardHeadingKD = 0;
     
     this.forwardHeadingTolerance = 1;
     this.forwardDistanceTolerance = 23.2;
+    this.gyro = gyro;
+    this.average = average;
   }
 }
