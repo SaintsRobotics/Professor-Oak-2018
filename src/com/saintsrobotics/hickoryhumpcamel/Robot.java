@@ -2,13 +2,19 @@ package com.saintsrobotics.hickoryhumpcamel;
 
 import com.github.dozer.TaskRobot;
 import com.github.dozer.coroutine.Task;
+import com.github.dozer.coroutine.helpers.RunEachFrameTask;
 import com.github.dozer.coroutine.helpers.RunSequentialTask;
 import com.saintsrobotics.hickoryhumpcamel.input.OI;
+import com.saintsrobotics.hickoryhumpcamel.input.Sensors;
+import com.saintsrobotics.hickoryhumpcamel.input.TestSensors;
 import com.saintsrobotics.hickoryhumpcamel.output.*;
-import com.saintsrobotics.hickoryhumpcamel.task.auton.SimpleMoveBackward;
 import com.saintsrobotics.hickoryhumpcamel.task.auton.SimpleMoveForward;
+import com.saintsrobotics.hickoryhumpcamel.task.auton.ForwardAtHeadingTask;
 import com.saintsrobotics.hickoryhumpcamel.task.auton.TurnToHeadingTask;
 import com.saintsrobotics.hickoryhumpcamel.task.teleop.ArcadeDrive;
+import com.saintsrobotics.hickoryhumpcamel.util.PIDConfiguration;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -20,19 +26,53 @@ import com.saintsrobotics.hickoryhumpcamel.task.teleop.ArcadeDrive;
 public class Robot extends TaskRobot {
   
   public TestMotors motors;
+  public Servos servos;
   public OI oi;
   public Flags flags;
+  public Sensors sensors;
+  public PIDConfiguration forwardPidConfig;
+  public PIDConfiguration turnPidConfig;
   
   public static Robot instance;
   
   @Override
   public void robotInit() {
+    Robot.instance = this;
     this.oi = new OI();
     this.motors = new SetTestMotors();
     this.motors.init();
     this.flags = new Flags();
-    Robot.instance = this;
-    this.autonomousTasks =  new Task[]{new RunSequentialTask(new TurnToHeadingTask(90), new TurnToHeadingTask(30))};
-    this.teleopTasks = new Task[]{new ArcadeDrive()};
+    this.sensors = new TestSensors();
+    this.sensors.init();
+    this.forwardPidConfig = new PIDConfiguration(this.sensors.gyro, this.sensors.average);
+    this.turnPidConfig = new PIDConfiguration(this.sensors.gyro);
+  }
+  
+  @Override
+  public void autonomousInit() {
+    this.autonomousTasks =  new Task[]{
+        new RunSequentialTask(
+            new ForwardAtHeadingTask(0, 232 * 2, this.forwardPidConfig),
+            new TurnToHeadingTask(45, this.turnPidConfig),
+            new ForwardAtHeadingTask(0, 232 * 3, this.forwardPidConfig),
+            new TurnToHeadingTask(-45, this.turnPidConfig),
+            new ForwardAtHeadingTask(0, 232 * 4.486, this.forwardPidConfig)
+        )};
+    super.autonomousInit();
+  }
+  
+  @Override
+  public void teleopInit() {
+    this.teleopTasks = new Task[]{
+        new RunSequentialTask(
+            new RunEachFrameTask() {
+              @Override
+              public void runEachFrame() {
+                SmartDashboard.putNumber("LY", oi.xboxInput.leftStickY());
+                SmartDashboard.putNumber("RX", oi.xboxInput.rightStickX());
+              }
+            }
+        )};
+    super.teleopInit();
   }
 }

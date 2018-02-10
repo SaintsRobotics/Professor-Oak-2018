@@ -1,32 +1,37 @@
 package com.saintsrobotics.hickoryhumpcamel.task.auton;
 
-import com.github.dozer.coroutine.helpers.RunContinuousTask;
+import com.github.dozer.coroutine.Task;
 import com.saintsrobotics.hickoryhumpcamel.Robot;
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.PIDSource;
+import com.saintsrobotics.hickoryhumpcamel.util.PIDConfiguration;
 import com.saintsrobotics.hickoryhumpcamel.util.PIDReceiver;
 
-public class TurnToHeadingTask extends RunContinuousTask {
+public class TurnToHeadingTask extends Task {
   private double heading;
   private PIDReceiver headingPidReceiver;
   private PIDController headingPidController;
   private PIDSource gyro;
 
-  public TurnToHeadingTask(double heading, PIDSource gyro) {
+  public TurnToHeadingTask(double heading, PIDConfiguration pidConfig) {
     this.heading = heading;
+    this.gyro = pidConfig.gyro;
     this.headingPidReceiver = new PIDReceiver();
-    this.headingPidController = new PIDController(0.02, 0.0006, 0.08, gyro, headingPidReceiver);
-    this.headingPidController.setAbsoluteTolerance(3);
+    this.headingPidController = new PIDController(pidConfig.turnHeadingKP, pidConfig.turnHeadingKI, pidConfig.turnHeadingKD, gyro, headingPidReceiver);
+    this.headingPidController.setAbsoluteTolerance(pidConfig.turnHeadingTolerance);
   }
 
   @Override
-  protected boolean runContinuously() {
-    wait.forFrame();
+  protected void runTask() {
     this.headingPidController.enable();
     this.headingPidController.setSetpoint(this.heading + this.gyro.pidGet());
-    double headingOutput = this.headingPidReceiver.getOutput();
-    Robot.instance.motors.leftDrive.set(headingOutput);
-    Robot.instance.motors.rightDrive.set(-headingOutput);
-    return this.headingPidController.onTarget();
+    while(!this.headingPidController.onTarget()) {
+      double headingOutput = this.headingPidReceiver.getOutput();
+      Robot.instance.motors.leftDrive.set(headingOutput);
+      Robot.instance.motors.rightDrive.set(-headingOutput);
+      wait.forFrame();
+    }
+    Robot.instance.motors.leftDrive.stop();
+    Robot.instance.motors.rightDrive.stop();
   }
 }

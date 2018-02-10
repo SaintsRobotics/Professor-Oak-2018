@@ -7,7 +7,7 @@ public class SetTestMotors extends TestMotors {
   @Override
   public void init() {
     this.leftDrive = new MotorSimple(new Talon(0), false);
-    this.rightDrive = new MotorSimple(new Talon(1), false);
+    this.rightDrive = new MotorSimple(new Talon(1), true);
     this.intake = new MotorSimple(new Talon(9), false);
   }
 }
