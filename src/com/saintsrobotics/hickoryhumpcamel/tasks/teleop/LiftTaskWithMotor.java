@@ -8,22 +8,18 @@ import com.github.dozer.coroutine.helpers.RunEachFrameTask;
 
 
 public class LiftTaskWithMotor extends RunEachFrameTask {
-  
-    private static double holdPosition; //Add actual value later
     
     
     @Override
     protected void runEachFrame() {
-    	holdPosition = SmartDashboard.getNumber("holdPosition", 0.11);
-        double MovementAmount = Robot.instance.oi.xboxInput.rightTrigger() - Robot.instance.oi.xboxInput.leftTrigger();
-        if (MovementAmount != 0 && Robot.instance.sensors.lifterDown.get() != true && Robot.instance.sensors.lifterUp.get() != true) {
-        	Robot.instance.motors.lifter.set(MovementAmount);
+    	double holdPosition = SmartDashboard.getNumber("holdPosition", 0.11);
+        double movementAmount = Robot.instance.oi.xboxInput.rightTrigger() - Robot.instance.oi.xboxInput.leftTrigger();
+        if(Robot.instance.sensors.lifterUp.get() && movementAmount > 0) {
+        	movementAmount = 0;
         }
-        else {
-        	Robot.instance.motors.lifter.set(holdPosition);
+        if(Robot.instance.sensors.lifterDown.get() && movementAmount < 0) {
+        	movementAmount = 0;
         }
-    	 
+        Robot.instance.motors.lifter.set(movementAmount + holdPosition);
     }
-        
-        
 }

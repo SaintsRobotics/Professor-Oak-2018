@@ -1,4 +1,4 @@
-package com.saintsrobotics.hickoryhumpcamel.task.auton;
+package com.saintsrobotics.hickoryhumpcamel.tasks.auton;
 
 import com.saintsrobotics.hickoryhumpcamel.Robot;
 import com.saintsrobotics.hickoryhumpcamel.util.PIDConfiguration;

@@ -8,10 +8,10 @@ import com.saintsrobotics.hickoryhumpcamel.input.OI;
 import com.saintsrobotics.hickoryhumpcamel.input.Sensors;
 import com.saintsrobotics.hickoryhumpcamel.input.TestSensors;
 import com.saintsrobotics.hickoryhumpcamel.output.*;
-import com.saintsrobotics.hickoryhumpcamel.task.auton.SimpleMoveForward;
-import com.saintsrobotics.hickoryhumpcamel.task.auton.ForwardAtHeadingTask;
-import com.saintsrobotics.hickoryhumpcamel.task.auton.TurnToHeadingTask;
-import com.saintsrobotics.hickoryhumpcamel.task.teleop.ArcadeDrive;
+import com.saintsrobotics.hickoryhumpcamel.tasks.auton.ForwardAtHeadingTask;
+import com.saintsrobotics.hickoryhumpcamel.tasks.auton.SimpleMoveForward;
+import com.saintsrobotics.hickoryhumpcamel.tasks.auton.TurnToHeadingTask;
+import com.saintsrobotics.hickoryhumpcamel.tasks.teleop.ArcadeDrive;
 import com.saintsrobotics.hickoryhumpcamel.util.PIDConfiguration;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 

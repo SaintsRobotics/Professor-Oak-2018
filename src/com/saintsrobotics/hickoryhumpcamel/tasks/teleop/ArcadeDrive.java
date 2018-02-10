@@ -1,4 +1,4 @@
-package com.saintsrobotics.hickoryhumpcamel.task.teleop;
+package com.saintsrobotics.hickoryhumpcamel.tasks.teleop;
 
 import com.github.dozer.coroutine.helpers.RunEachFrameTask;
 import com.saintsrobotics.hickoryhumpcamel.Robot;

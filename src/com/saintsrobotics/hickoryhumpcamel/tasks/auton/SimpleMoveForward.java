@@ -1,4 +1,4 @@
-package com.saintsrobotics.hickoryhumpcamel.task.auton;
+package com.saintsrobotics.hickoryhumpcamel.tasks.auton;
 
 import com.github.dozer.coroutine.Task;
 import com.saintsrobotics.hickoryhumpcamel.Robot;
