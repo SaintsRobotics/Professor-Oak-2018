@@ -4,7 +4,7 @@ import com.github.dozer.coroutine.Task;
 import com.saintsrobotics.hickoryhumpcamel.Robot;
 
 public class SimpleMoveForward extends Task {
-  
+
   @Override
   protected void runTask() {
     Robot.instance.motors.leftDrive.set(0.2);

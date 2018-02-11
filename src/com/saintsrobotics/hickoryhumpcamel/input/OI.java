@@ -4,9 +4,9 @@ import com.github.dozer.input.OI.*;
 
 public class OI {
   public XboxInput xboxInput = new XboxInput(0);
-  
+
   public OI() {
-	  this.xboxInput.init();
+    this.xboxInput.init();
   }
 }
 

@@ -23,10 +23,12 @@ public class ForwardAtHeadingTask extends Task {
     this.gyro = pidConfig.gyro;
     this.average = pidConfig.average;
     this.headingPidReceiver = new PIDReceiver();
-    this.headingPidController = new PIDController(pidConfig.forwardHeadingKP, pidConfig.forwardHeadingKI, pidConfig.forwardHeadingKD, gyro, headingPidReceiver);
+    this.headingPidController = new PIDController(pidConfig.forwardHeadingKP,
+        pidConfig.forwardHeadingKI, pidConfig.forwardHeadingKD, gyro, headingPidReceiver);
     this.headingPidController.setAbsoluteTolerance(pidConfig.forwardHeadingTolerance);
     this.distancePidReceiver = new PIDReceiver();
-    this.distancePidController = new PIDController(pidConfig.forwardDistanceKP, pidConfig.forwardDistanceKI, pidConfig.forwardDistanceKD, average, distancePidReceiver);
+    this.distancePidController = new PIDController(pidConfig.forwardDistanceKP,
+        pidConfig.forwardDistanceKI, pidConfig.forwardDistanceKD, average, distancePidReceiver);
     this.distancePidController.setAbsoluteTolerance(pidConfig.forwardDistanceTolerance);
   }
 
@@ -36,14 +38,14 @@ public class ForwardAtHeadingTask extends Task {
     this.headingPidController.setSetpoint(this.heading + this.gyro.pidGet());
     this.distancePidController.enable();
     this.distancePidController.setSetpoint(this.distance + this.average.pidGet());
-    while(!this.distancePidController.onTarget()) {
+    while (!this.distancePidController.onTarget()) {
       double headingOutput = this.headingPidReceiver.getOutput();
       double distanceOutput = this.distancePidReceiver.getOutput();
       Robot.instance.motors.leftDrive.set(distanceOutput + headingOutput);
       Robot.instance.motors.rightDrive.set(distanceOutput - headingOutput);
       wait.forFrame();
     }
-    Robot.instance.motors.leftDrive.stop();
-    Robot.instance.motors.rightDrive.stop();
+    Robot.instance.motors.leftDrive.set(0);
+    Robot.instance.motors.rightDrive.set(0);
   }
 }

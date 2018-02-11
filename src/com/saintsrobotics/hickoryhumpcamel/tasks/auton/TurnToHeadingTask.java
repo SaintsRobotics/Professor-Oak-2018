@@ -17,7 +17,8 @@ public class TurnToHeadingTask extends Task {
     this.heading = heading;
     this.gyro = pidConfig.gyro;
     this.headingPidReceiver = new PIDReceiver();
-    this.headingPidController = new PIDController(pidConfig.turnHeadingKP, pidConfig.turnHeadingKI, pidConfig.turnHeadingKD, gyro, headingPidReceiver);
+    this.headingPidController = new PIDController(pidConfig.turnHeadingKP, pidConfig.turnHeadingKI,
+        pidConfig.turnHeadingKD, gyro, headingPidReceiver);
     this.headingPidController.setAbsoluteTolerance(pidConfig.turnHeadingTolerance);
   }
 
@@ -25,13 +26,13 @@ public class TurnToHeadingTask extends Task {
   protected void runTask() {
     this.headingPidController.enable();
     this.headingPidController.setSetpoint(this.heading + this.gyro.pidGet());
-    while(!this.headingPidController.onTarget()) {
+    while (!this.headingPidController.onTarget()) {
       double headingOutput = this.headingPidReceiver.getOutput();
       Robot.instance.motors.leftDrive.set(headingOutput);
       Robot.instance.motors.rightDrive.set(-headingOutput);
       wait.forFrame();
     }
-    Robot.instance.motors.leftDrive.stop();
-    Robot.instance.motors.rightDrive.stop();
+    Robot.instance.motors.leftDrive.set(0);
+    Robot.instance.motors.rightDrive.set(0);
   }
 }
