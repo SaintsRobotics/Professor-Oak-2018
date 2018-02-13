@@ -68,7 +68,23 @@ public class Robot extends TaskRobot {
 
   @Override
   public void teleopInit() {
-    this.teleopTasks = new Task[] {new LiftTask()};
+    this.teleopTasks = new Task[] {new LiftTask(), /*new RunEachFrameTask() {
+
+      @Override
+      protected void runEachFrame() {
+        double left = oi.xboxInput.leftStickY();
+        double right = oi.xboxInput.rightStickY();
+        SmartDashboard.putNumber("Controller left", left);
+        SmartDashboard.putNumber("Controller right", right);
+        motors.leftDrive.set(left);
+        motors.rightDrive.set(right);
+        SmartDashboard.putNumber("Motor left", motors.leftDrive.get());
+        SmartDashboard.putNumber("Motor right", motors.rightDrive.get());
+        SmartDashboard.putNumber("Diff right", right - motors.rightDrive.get());
+        SmartDashboard.putNumber("Diff left", left - motors.leftDrive.get());
+      }
+      
+    }*/ new ArcadeDrive()};
     super.teleopInit();
   }
 }
