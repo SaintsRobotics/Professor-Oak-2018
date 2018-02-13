@@ -1,34 +1,23 @@
 package com.saintsrobotics.hickoryhumpcamel.tasks.teleop;
 
 import com.saintsrobotics.hickoryhumpcamel.Robot;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import com.github.dozer.coroutine.helpers.RunEachFrameTask;
 
 
 public class LiftTask extends RunEachFrameTask {
-  private long startTime;
-
-  public LiftTask() {
-    this.startTime = System.currentTimeMillis();
-  }
 
 
   @Override
   protected void runEachFrame() {
-    double Rightamount = Robot.instance.oi.xboxInput.rightTrigger();
-    double Leftamount = Robot.instance.oi.xboxInput.leftTrigger();
-    double currentAmount = Robot.instance.servos.lifter.getAngle();
-    long currentTime = System.currentTimeMillis();
-    long timeDifference = currentTime - startTime;
-    if (Rightamount > 0 && Robot.instance.sensors.lifterUp.get() != true) {
-
-      Robot.instance.servos.lifter.setPosition(currentAmount + Rightamount * timeDifference);
-
+    double movementAmount =
+        Robot.instance.oi.xboxInput.rightTrigger() - Robot.instance.oi.xboxInput.leftTrigger();
+    if (Robot.instance.sensors.lifterUp.get() && movementAmount > 0) {
+      movementAmount = 0;
     }
-    if (Leftamount > 0 && Robot.instance.sensors.lifterDown.get() != true) {
-      Robot.instance.servos.lifter.setPosition(currentAmount - Leftamount * timeDifference);
+    if (Robot.instance.sensors.lifterDown.get() && movementAmount < 0) {
+      movementAmount = 0;
     }
-
-    this.startTime = currentTime;
-
+    Robot.instance.motors.lifter.set(movementAmount);
   }
 }
