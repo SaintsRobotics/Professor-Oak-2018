@@ -12,7 +12,10 @@ import com.saintsrobotics.hickoryhumpcamel.tasks.auton.ForwardAtHeadingTask;
 import com.saintsrobotics.hickoryhumpcamel.tasks.auton.SimpleMoveForward;
 import com.saintsrobotics.hickoryhumpcamel.tasks.auton.TurnToHeadingTask;
 import com.saintsrobotics.hickoryhumpcamel.tasks.teleop.ArcadeDrive;
+import com.saintsrobotics.hickoryhumpcamel.tasks.teleop.LiftTaskWithMotor;
 import com.saintsrobotics.hickoryhumpcamel.util.PIDConfiguration;
+import com.saintsrobotics.hickoryhumpcamel.util.UpdateMotors;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 
@@ -54,20 +57,31 @@ public class Robot extends TaskRobot {
     this.sensors.rightEncoder.reset();
     this.sensors.gyro.reset();
     this.autonomousTasks = new Task[] {
-        /* new RunSequentialTask( */
-        new ForwardAtHeadingTask(0, 232 * 2,
-            this.forwardPidConfig)/*
-                                   * , new TurnToHeadingTask(45, this.turnPidConfig), new
-                                   * ForwardAtHeadingTask(0, 232 * 3, this.forwardPidConfig), new
-                                   * TurnToHeadingTask(-45, this.turnPidConfig), new
-                                   * ForwardAtHeadingTask(0, 232 * 4.486, this.forwardPidConfig) )
-                                   */};
+        new RunSequentialTask(
+            new ForwardAtHeadingTask(0, 232 * 2, this.forwardPidConfig),
+            new TurnToHeadingTask(45, this.turnPidConfig),
+            new ForwardAtHeadingTask(0, 232 * 3, this.forwardPidConfig),
+            new TurnToHeadingTask(-45, this.turnPidConfig),
+            new ForwardAtHeadingTask(0, 232 * 4.486, this.forwardPidConfig)
+        )
+    };
     super.autonomousInit();
   }
 
   @Override
   public void teleopInit() {
-    this.teleopTasks = new Task[] {new ArcadeDrive()};
+    this.teleopTasks = new Task[] {new ArcadeDrive(),/*, new LiftTaskWithMotor()*/ new RunEachFrameTask() {
+
+      @Override
+      protected void runEachFrame() {
+        SmartDashboard.putNumber("Right X", Robot.instance.motors.rightDrive.get());
+        SmartDashboard.putNumber("left X", Robot.instance.motors.leftDrive.get());
+        SmartDashboard.putNumber("drive diff", Robot.instance.motors.leftDrive.get() - Robot.instance.motors.rightDrive.get());
+        
+      }
+      
+    }
+    };
     super.teleopInit();
   }
 }

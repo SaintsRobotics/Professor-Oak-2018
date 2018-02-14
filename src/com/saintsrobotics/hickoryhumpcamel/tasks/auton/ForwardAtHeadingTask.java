@@ -45,7 +45,7 @@ public class ForwardAtHeadingTask extends Task {
       Robot.instance.motors.rightDrive.set(distanceOutput - headingOutput);
       wait.forFrame();
     }
-    Robot.instance.motors.leftDrive.set(0);
-    Robot.instance.motors.rightDrive.set(0);
+    Robot.instance.motors.leftDrive.stop();
+    Robot.instance.motors.rightDrive.stop();
   }
 }

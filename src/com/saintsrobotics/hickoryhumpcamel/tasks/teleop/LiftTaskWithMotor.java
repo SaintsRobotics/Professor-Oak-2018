@@ -10,7 +10,6 @@ public class LiftTaskWithMotor extends RunEachFrameTask {
 
   @Override
   protected void runEachFrame() {
-    double holdPosition = SmartDashboard.getNumber("holdPosition", 0.11);
     double movementAmount =
         Robot.instance.oi.xboxInput.rightTrigger() - Robot.instance.oi.xboxInput.leftTrigger();
     if (Robot.instance.sensors.lifterUp.get() && movementAmount > 0) {
@@ -19,6 +18,6 @@ public class LiftTaskWithMotor extends RunEachFrameTask {
     if (Robot.instance.sensors.lifterDown.get() && movementAmount < 0) {
       movementAmount = 0;
     }
-    Robot.instance.motors.lifter.set(movementAmount + holdPosition);
+    Robot.instance.motors.lifter.set(movementAmount);
   }
 }
