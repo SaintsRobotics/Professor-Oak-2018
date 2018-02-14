@@ -14,6 +14,7 @@ public abstract class Sensors {
 
   public Encoder rightEncoder;
   public Encoder leftEncoder;
+  public Encoder liftEncoder;
   public AveragePIDSources average;
 
   public DigitalInput wingsLeftDown;
