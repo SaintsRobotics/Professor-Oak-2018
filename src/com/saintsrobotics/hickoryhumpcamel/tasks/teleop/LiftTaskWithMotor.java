@@ -12,12 +12,12 @@ public class LiftTaskWithMotor extends RunEachFrameTask {
   protected void runEachFrame() {
     double movementAmount =
         Robot.instance.oi.xboxInput.rightTrigger() - Robot.instance.oi.xboxInput.leftTrigger();
-    /*if (Robot.instance.sensors.lifterUp.get() && movementAmount > 0) {
+    if (Robot.instance.sensors.lifterUp.get() && movementAmount > 0) {
       movementAmount = 0;
     }
     if (Robot.instance.sensors.lifterDown.get() && movementAmount < 0) {
       movementAmount = 0;
-    }*/
+    }
     Robot.instance.motors.lifter.set(movementAmount);
     SmartDashboard.putNumber("liftEncoder", Robot.instance.sensors.liftEncoder.getDistance());
   }
