@@ -12,5 +12,9 @@ public class TestSensors extends Sensors {
     this.gyro = new ADXRS450_Gyro();
     this.lifterDown = new DigitalInput(0);
     this.lifterUp = new DigitalInput(9);
+    
+    this.liftEncoder = new Encoder(5, 6);
+    this.leftEncoder = new Encoder(1, 2);
+    this.rightEncoder = new Encoder(3, 4);
   }
 }
