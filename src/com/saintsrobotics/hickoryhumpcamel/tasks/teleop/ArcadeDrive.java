@@ -12,7 +12,5 @@ public class ArcadeDrive extends RunEachFrameTask {
     double turn = Robot.instance.oi.xboxInput.rightStickX() * 0.4;
     Robot.instance.motors.leftDrive.set(forward - turn);
     Robot.instance.motors.rightDrive.set(forward + turn);
-    
-    SmartDashboard.putNumber("Theroetical drive diff", (forward - turn) - (forward + turn));
   }
 }

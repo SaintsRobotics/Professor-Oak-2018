@@ -10,13 +10,12 @@ public class TestSensors extends Sensors {
 
   @Override
   public void init() {
-    //this.gyro = new ADXRS450_Gyro();
-    //this.rightEncoder = new DistanceEncoder(0, 1, 232);
-    //this.leftEncoder = new DistanceEncoder(2, 3, 232);
-    //this.average = new AveragePIDSources(rightEncoder, leftEncoder, false, true);
+    this.gyro = new ADXRS450_Gyro();
     this.lifterDown = new DigitalInput(0);
     this.lifterUp = new DigitalInput(9);
-    //liftEncoder is 127 ticks per in., 1528 ticks per foot
+    
     this.liftEncoder = new DistanceEncoder(6, 5, 1528);
+    this.leftEncoder = new Encoder(1, 2);
+    this.rightEncoder = new Encoder(3, 4);
   }
 }

@@ -13,32 +13,25 @@ public class LiftTask extends RunEachFrameTask {
 
   @Override
   protected void runEachFrame() {
-    SmartDashboard.putNumber("liftDistance", Robot.instance.sensors.liftEncoder.getDistance());
-    liftDistance = 10000/*SmartDashboard.getNumber("liftDistance", 1000)*/;
+    liftDistance = SmartDashboard.getNumber("liftDistance", 1528);
     double movementAmount =
         Robot.instance.oi.xboxInput.rightTrigger() - Robot.instance.oi.xboxInput.leftTrigger();
     if (!Robot.instance.sensors.lifterUp.get() && movementAmount > 0) {
       movementAmount = 0;
       Robot.instance.motors.lifter.stop();
-      Robot.instance.sensors.liftEncoder.reset();
-
     }
     if (!Robot.instance.sensors.lifterDown.get() && movementAmount < 0) {
       movementAmount = 0;
       Robot.instance.sensors.liftEncoder.reset();
       Robot.instance.motors.lifter.stop();
     }
-    double distanceRatio = liftDistance / Robot.instance.sensors.liftEncoder.getDistance() ;
-    if(Robot.instance.sensors.liftEncoder.getDistance() >= liftDistance) {
-      distanceRatio = 0; 
+    if(Robot.instance.sensors.liftEncoder.getDistance() > 3.9 && movementAmount > 0.15) {
+      movementAmount = 0.15;
     }
-    SmartDashboard.putNumber("liftEncoder", Robot.instance.sensors.liftEncoder.getDistance());
-    SmartDashboard.putNumber("distanceRatio", distanceRatio);
-    double overallMove = movementAmount * distanceRatio;
-    SmartDashboard.putNumber("overallMove", overallMove);
-    Robot.instance.motors.lifter.set(overallMove);
+    if(Robot.instance.sensors.liftEncoder.getDistance() < 0.1 && movementAmount < -0.15) {
+      movementAmount = -0.15;
+    }
+    Robot.instance.motors.lifter.set(movementAmount);
     
   }
 }
-
-
