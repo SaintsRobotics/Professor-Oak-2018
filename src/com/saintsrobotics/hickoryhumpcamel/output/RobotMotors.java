@@ -1,7 +1,7 @@
 package com.saintsrobotics.hickoryhumpcamel.output;
 
 import com.github.dozer.output.Motor;
-import com.github.dozer.output.MotorGroup;
+import com.github.dozer.output.MotorRamping;
 
 public abstract class RobotMotors extends Motors {
   public Motor leftDrive;
@@ -14,4 +14,36 @@ public abstract class RobotMotors extends Motors {
   public Motor leftFront;
   public Motor rightBack;
   public Motor rightFront;
+  
+  private Motor[] allMotors;
+  private MotorRamping[] rampedMotors;
+  
+  public RobotMotors() {
+    this.allMotors = new Motor[] {
+         this.leftDrive,
+         this.rightDrive,
+         this.intake,
+         this.lifter,
+         this.leftWing,
+         this.rightWing,
+         this.leftBack,
+         this.leftFront,
+         this.rightBack,
+         this.rightFront
+    };
+  }
+  
+  public void stopAll() {
+    for (Motor motor : this.allMotors)
+      motor.stop();
+  }
+  /**
+   * @deprecated
+   * I put that deprecated in there just so you'd read this javadoc, make sure to set the ramped motors in the base class or this won't work properly.
+   * 
+   */
+  public void update() {
+    for (MotorRamping motor : this.rampedMotors)
+      motor.update();
+  }
 }

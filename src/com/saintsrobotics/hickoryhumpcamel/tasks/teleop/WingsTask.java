@@ -34,7 +34,6 @@ public class WingsTask extends Task {
     wait.until(this.downCondition);
     this.wingMotor.stop();
 
-
     // Up
     wait.until(() -> Robot.instance.oi.xboxInput.B());
     this.wingMotor.set(1);
@@ -42,7 +41,5 @@ public class WingsTask extends Task {
 
     yield(this.upCondition);
     this.wingMotor.stop();
-
   }
-
 }

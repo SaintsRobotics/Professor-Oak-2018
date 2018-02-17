@@ -22,7 +22,6 @@ import com.saintsrobotics.hickoryhumpcamel.util.PIDConfiguration;
 public class Robot extends TaskRobot {
 
   public RobotMotors motors;
-  public Servos servos;
   public OI oi;
   public Flags flags;
   public Sensors sensors;
