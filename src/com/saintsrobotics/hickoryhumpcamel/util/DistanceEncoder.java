@@ -12,6 +12,11 @@ public class DistanceEncoder extends Encoder {
   
   @Override
   public double getDistance() {
-    return super.getDistance() / this.ticksPerUnit;
+    return super.get() / this.ticksPerUnit;
+  }
+  
+  @Override
+  public double pidGet() {
+    return super.get() / this.ticksPerUnit;
   }
 }

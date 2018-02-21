@@ -11,11 +11,16 @@ public class TestSensors extends Sensors {
   @Override
   public void init() {
     this.gyro = new ADXRS450_Gyro();
-    this.lifterDown = new DigitalInput(0);
-    this.lifterUp = new DigitalInput(9);
+    this.lifterDown = new DigitalInput(8);
+    this.lifterUp = new DigitalInput(7);
+  
+    this.intake = new DigitalInput(19);
     
-    this.liftEncoder = new DistanceEncoder(6, 5, 1528);
+    this.liftEncoder = new DistanceEncoder(6, 5, -1528);
     this.leftEncoder = new Encoder(1, 2);
-    this.rightEncoder = new Encoder(3, 4);
+    this.leftEncoder.setDistancePerPulse(1/1792.5);
+    this.rightEncoder = new Encoder(3, 4, true);
+    this.rightEncoder.setDistancePerPulse(1/1792.5);
+    this.average = new AveragePIDSources(this.leftEncoder, this.rightEncoder,false, false);
   }
 }

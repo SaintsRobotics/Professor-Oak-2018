@@ -15,22 +15,11 @@ public abstract class RobotMotors extends Motors {
   public Motor rightBack;
   public Motor rightFront;
   
-  private Motor[] allMotors;
-  private MotorRamping[] rampedMotors;
+  protected Motor[] allMotors;
+  protected MotorRamping[] rampedMotors;
   
   public RobotMotors() {
-    this.allMotors = new Motor[] {
-         this.leftDrive,
-         this.rightDrive,
-         this.intake,
-         this.lifter,
-         this.leftWing,
-         this.rightWing,
-         this.leftBack,
-         this.leftFront,
-         this.rightBack,
-         this.rightFront
-    };
+    
   }
   
   public void stopAll() {

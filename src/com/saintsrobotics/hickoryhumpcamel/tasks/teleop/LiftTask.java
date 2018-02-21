@@ -13,9 +13,15 @@ public class LiftTask extends RunEachFrameTask {
 
   @Override
   protected void runEachFrame() {
-    liftDistance = SmartDashboard.getNumber("liftDistance", 1528);
     double movementAmount =
         Robot.instance.oi.xboxInput.rightTrigger() - Robot.instance.oi.xboxInput.leftTrigger();
+    SmartDashboard.putNumber("LIFT", Robot.instance.sensors.liftEncoder.getDistance() );
+    if(Robot.instance.sensors.liftEncoder.getDistance() > 3.4 && movementAmount > 0.3) {
+      movementAmount = 0.3;
+    }
+    if(Robot.instance.sensors.liftEncoder.getDistance() < 0.3 && movementAmount < -0.3) {
+      movementAmount = -0.3;
+    }
     if (!Robot.instance.sensors.lifterUp.get() && movementAmount > 0) {
       movementAmount = 0;
       Robot.instance.motors.lifter.stop();
@@ -25,13 +31,7 @@ public class LiftTask extends RunEachFrameTask {
       Robot.instance.sensors.liftEncoder.reset();
       Robot.instance.motors.lifter.stop();
     }
-    if(Robot.instance.sensors.liftEncoder.getDistance() > 3.9 && movementAmount > 0.15) {
-      movementAmount = 0.15;
-    }
-    if(Robot.instance.sensors.liftEncoder.getDistance() < 0.1 && movementAmount < -0.15) {
-      movementAmount = -0.15;
-    }
-    Robot.instance.motors.lifter.set(movementAmount);
+    Robot.instance.motors.lifter.set(movementAmount+0.01);
     
   }
 }

@@ -18,24 +18,26 @@ public class WingsTask extends Task {
   private Motor wingMotor;
   private BooleanSupplier downCondition;
   private BooleanSupplier upCondition;
-
-  public WingsTask(Motor wingMotor, BooleanSupplier downCondition, BooleanSupplier upCondition) {
+  private BooleanSupplier buttonCondition;
+  
+  public WingsTask(Motor wingMotor, BooleanSupplier downCondition, BooleanSupplier upCondition, BooleanSupplier buttonCondition) {
     this.wingMotor = wingMotor;
     this.downCondition = downCondition;
     this.upCondition = upCondition;
+    this.buttonCondition = buttonCondition;
   }
 
   @Override
   protected void runTask() {
     // Down
-    wait.until(() -> Robot.instance.oi.xboxInput.B());
+    wait.until(this.buttonCondition);
     this.wingMotor.set(-1);
 
     wait.until(this.downCondition);
     this.wingMotor.stop();
 
     // Up
-    wait.until(() -> Robot.instance.oi.xboxInput.B());
+    wait.until(this.buttonCondition);
     this.wingMotor.set(1);
 
 

@@ -1,24 +1,18 @@
 package com.saintsrobotics.hickoryhumpcamel.tasks.teleop;
 
 import com.saintsrobotics.hickoryhumpcamel.Robot;
+import com.github.dozer.coroutine.helpers.RunContinuousTask;
 import com.github.dozer.coroutine.helpers.RunEachFrameTask;
 
 
-public class OutTakeWheel extends RunEachFrameTask {
-  private long time = 0;
-  private long startTime;
+public class OutTakeWheel extends RunContinuousTask {
 
   @Override
-  protected void runEachFrame() {
-    boolean trig = Robot.instance.oi.xboxInput.LB();
-
-    if (trig) {
-      startTime = System.currentTimeMillis();
-      while (time < 3000) { // Adjust time limit as needed
-        Robot.instance.motors.intake.set(-0.1);
-        this.time = System.currentTimeMillis() - startTime;
-      }
-
-    }
+  protected void runForever() {
+    wait.until(()->Robot.instance.oi.xboxInput.LB() && !Robot.instance.oi.xboxInput.RB());
+    Robot.instance.motors.intake.set(-0.5);
+    wait.until(()->!Robot.instance.oi.xboxInput.LB() || Robot.instance.oi.xboxInput.RB());
+    Robot.instance.motors.intake.set(0);
+    Robot.instance.motors.intake.stop();
   }
 }

@@ -1,5 +1,6 @@
 package com.saintsrobotics.hickoryhumpcamel.util;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.PIDOutput;
 
 public class PIDReceiver implements PIDOutput {

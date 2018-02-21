@@ -8,8 +8,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class ArcadeDrive extends RunEachFrameTask {
   @Override
   public void runEachFrame() {
-    double forward = Robot.instance.oi.xboxInput.leftStickY() * 0.4;
-    double turn = Robot.instance.oi.xboxInput.rightStickX() * 0.4;
+    double forward = -Robot.instance.oi.xboxInput.leftStickY() * 0.8;
+    double turn = -Robot.instance.oi.xboxInput.rightStickX() * 0.6;
     Robot.instance.motors.leftDrive.set(forward - turn);
     Robot.instance.motors.rightDrive.set(forward + turn);
   }
