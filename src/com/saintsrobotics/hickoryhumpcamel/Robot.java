@@ -68,9 +68,24 @@ public class Robot extends TaskRobot {
     this.sensors.leftEncoder.reset();
     this.sensors.rightEncoder.reset();
     this.sensors.gyro.reset();
-    this.autonomousTasks = new Task[] {new RunSequentialTask(new TurnToHeadingTask(180, new PIDConfiguration(this.sensors.gyro))
-        //new ForwardAtHeadingTask(0, 5, new PIDConfiguration(this.sensors.gyro, this.sensors.average))
-        )};
+    this.autonomousTasks = new Task[]   {new RunSequentialTask(
+        new ForwardAtHeadingTask(0, 48, new PIDConfiguration(this.sensors.gyro, this.sensors.average)),
+        new TurnToHeadingTask(90, new PIDConfiguration(this.sensors.gyro)),
+        new ForwardAtHeadingTask(90, 48, new PIDConfiguration(this.sensors.gyro, this.sensors.average)),
+        new TurnToHeadingTask(180, new PIDConfiguration(this.sensors.gyro)),
+        new ForwardAtHeadingTask(180, 48, new PIDConfiguration(this.sensors.gyro, this.sensors.average)),
+        new TurnToHeadingTask(270, new PIDConfiguration(this.sensors.gyro))
+        ), new UpdateMotors(this.motors),
+        new RunEachFrameTask() {
+
+      @Override
+      protected void runEachFrame() {
+        SmartDashboard.putNumber("Encoder Distance", sensors.leftEncoder.get());
+        SmartDashboard.putNumber("Encoder Avg Distance", sensors.average.pidGet());
+
+      }
+      
+    }};
     super.autonomousInit();
   }
 
@@ -88,12 +103,24 @@ public class Robot extends TaskRobot {
 
       @Override
       protected void runEachFrame() {
+        //right Wing
         double moveAmount =0;
         if(Robot.instance.oi.xboxInput.B()) moveAmount += 1;
         if(Robot.instance.oi.xboxInput.X()) moveAmount -= 1;
         
         Robot.instance.motors.rightWing.set(moveAmount);
-        //SmartDashboard.putNumber("Encoder Distance", sensors.average.pidGet());
+        
+        //left wing
+        moveAmount = 0;
+        if(Robot.instance.oi.xboxInput.Y()) moveAmount += 1;
+        if(Robot.instance.oi.xboxInput.A()) moveAmount -= 1;
+        
+        Robot.instance.motors.leftWing.set(moveAmount);
+        
+        
+        //Other Debug Code
+        SmartDashboard.putNumber("Encoder Distance", sensors.leftEncoder.get());
+        SmartDashboard.putNumber("Encoder Avg Distance", sensors.average.pidGet());
         
         for (int i : new int[] { 0, 1, 2, 3, 12, 13, 14, 15 }) {
           SmartDashboard.putNumber("Current: " + i, pdp.getCurrent(i));
@@ -103,7 +130,7 @@ public class Robot extends TaskRobot {
           SmartDashboard.putNumber("left Current", motors.leftBack.get());
       }
       
-    }/*, new UpdateMotors(this.motors)*/};
+    }, new UpdateMotors(this.motors)};
     
     /*this.teleopTasks = new Task[] {
         new Task() {
@@ -128,5 +155,21 @@ public class Robot extends TaskRobot {
         }
     };*/
     super.teleopInit();
+  }
+  @Override
+  public void disabledInit() {
+    this.sensors.leftEncoder.reset();
+    this.sensors.rightEncoder.reset();
+    this.disabledTasks = new Task[] {new RunEachFrameTask() {
+
+      @Override
+      protected void runEachFrame() {
+        SmartDashboard.putNumber("Encoder Distance", sensors.leftEncoder.get());
+        SmartDashboard.putNumber("Encoder Avg Distance", sensors.average.pidGet());
+
+      }
+      
+    }};
+    super.disabledInit();
   }
 }

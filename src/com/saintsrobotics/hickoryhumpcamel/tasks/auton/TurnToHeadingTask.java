@@ -22,7 +22,7 @@ public class TurnToHeadingTask extends Task {
     this.headingPidController = new PIDController(pidConfig.turnHeadingKP, pidConfig.turnHeadingKI,
         pidConfig.turnHeadingKD, gyro, headingPidReceiver);
     this.headingPidController.setAbsoluteTolerance(pidConfig.turnHeadingTolerance);
-    this.headingPidController.setOutputRange(-0.8, 0.8);
+    this.headingPidController.setOutputRange(-0.6, 0.6);
   }
 
   @Override

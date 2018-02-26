@@ -16,11 +16,9 @@ public class TestSensors extends Sensors {
   
     this.intake = new DigitalInput(19);
     
-    this.liftEncoder = new DistanceEncoder(6, 5, -1528);
-    this.leftEncoder = new Encoder(1, 2);
-    this.leftEncoder.setDistancePerPulse(1/1792.5);
-    this.rightEncoder = new Encoder(3, 4, true);
-    this.rightEncoder.setDistancePerPulse(1/1792.5);
+    this.liftEncoder = new DistanceEncoder(6, 5, -1528, false);
+    this.leftEncoder = new DistanceEncoder(1, 2, 161.9666666667, true);
+    this.rightEncoder = new DistanceEncoder(3, 4, 161.9666666667, false);
     this.average = new AveragePIDSources(this.leftEncoder, this.rightEncoder,false, false);
   }
 }

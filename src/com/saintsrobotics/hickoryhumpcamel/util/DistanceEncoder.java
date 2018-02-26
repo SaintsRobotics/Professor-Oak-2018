@@ -5,8 +5,8 @@ import edu.wpi.first.wpilibj.Encoder;
 public class DistanceEncoder extends Encoder {
   private double ticksPerUnit;
   
-  public DistanceEncoder(int port1, int port2, double ticksPerUnit) {
-    super(port1, port2);
+  public DistanceEncoder(int port1, int port2, double ticksPerUnit, boolean reversed) {
+    super(port1, port2, reversed);
     this.ticksPerUnit = ticksPerUnit;
   }
   

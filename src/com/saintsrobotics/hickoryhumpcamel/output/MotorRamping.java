@@ -1,16 +1,17 @@
 package com.saintsrobotics.hickoryhumpcamel.output;
 
 import edu.wpi.first.wpilibj.SpeedController;
+import com.github.dozer.output.Motor;
 
-public class MotorRamping extends com.github.dozer.output.MotorRamping {
-  public MotorRamping(SpeedController speedController, boolean inverted) {
-    super(speedController, inverted);
-  }
-
-  public static final double MOTOR_RAMPING = 0.01;
+public class MotorRamping implements Motor{
+  public static final double MOTOR_RAMPING = 0.3;
 
   private SpeedController speedController;
 
+  public MotorRamping(SpeedController speedController, boolean inverted) {
+    this.speedController = speedController;
+    this.speedController.setInverted(inverted);
+  }
 
   private double setpoint = 0;
   private double current = 0;
@@ -33,24 +34,11 @@ public class MotorRamping extends com.github.dozer.output.MotorRamping {
   public void update() {
     if (Math.abs(setpoint - current) < MOTOR_RAMPING) {
       current = setpoint;
-      return;
-    } 
-    if(setpoint > 0) {
-      if (setpoint > current) {
-        current += MOTOR_RAMPING;
-      } else {
-        current = setpoint;
-      }
-    }else if(setpoint < 0){
-      if (setpoint < current) {
-        current -= MOTOR_RAMPING;
-      } else {
-        current = setpoint;
-      }
-    }else {
-      current = 0;
+    } else if (setpoint > current) {
+      current += MOTOR_RAMPING;
+    } else if (setpoint < current) {
+      current -= MOTOR_RAMPING;
     }
     speedController.set(current);
   }
-
 }

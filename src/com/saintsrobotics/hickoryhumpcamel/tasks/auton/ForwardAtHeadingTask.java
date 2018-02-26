@@ -33,7 +33,7 @@ public class ForwardAtHeadingTask extends Task {
     this.distancePidController = new PIDController(pidConfig.forwardDistanceKP,
         pidConfig.forwardDistanceKI, pidConfig.forwardDistanceKD, average, distancePidReceiver);
     this.distancePidController.setAbsoluteTolerance(pidConfig.forwardDistanceTolerance);
-    this.distancePidController.setOutputRange(-0.5, 0.5);
+    this.distancePidController.setOutputRange(-0.3, 0.3);
   }
 
   @Override
@@ -42,8 +42,9 @@ public class ForwardAtHeadingTask extends Task {
     this.headingPidController.setSetpoint(this.heading);
     this.distancePidController.enable();
     this.distancePidController.setSetpoint(this.distance + this.average.pidGet());
+    DriverStation.reportWarning("Going forward, encoders at " + this.average.pidGet(), false);
     int frameCount = 0;
-    while (frameCount < 50) {
+    while (frameCount < 20) {
       double headingOutput = this.headingPidReceiver.getOutput();
       double distanceOutput = this.distancePidReceiver.getOutput();
       SmartDashboard.putNumber("Gyro Angle", this.gyro.pidGet());
@@ -51,7 +52,6 @@ public class ForwardAtHeadingTask extends Task {
       SmartDashboard.putNumber("PID Error", this.headingPidController.getError());
       SmartDashboard.putNumber("Distance Pid Driving", distanceOutput);
       SmartDashboard.putNumber("Distance PID Error", this.distancePidController.getError());
-      
       Robot.instance.motors.leftDrive.set(distanceOutput + headingOutput);
       Robot.instance.motors.rightDrive.set(distanceOutput - headingOutput);
       if(this.distancePidController.onTarget()) {
