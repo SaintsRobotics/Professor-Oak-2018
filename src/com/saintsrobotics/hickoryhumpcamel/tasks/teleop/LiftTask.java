@@ -7,12 +7,10 @@ import com.github.dozer.coroutine.helpers.RunEachFrameTask;
 
 
 public class LiftTask extends RunEachFrameTask {
-  
-  private double liftDistance; //stand-in for encoder distance 
-
 
   @Override
   protected void runEachFrame() {
+    Robot.instance.flags.liftEncoderValue = Robot.instance.sensors.liftEncoder.getDistance();
     double movementAmount =
         Robot.instance.oi.xboxInput.rightTrigger() - Robot.instance.oi.xboxInput.leftTrigger();
     SmartDashboard.putNumber("LIFT", Robot.instance.sensors.liftEncoder.getDistance() );
