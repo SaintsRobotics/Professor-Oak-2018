@@ -29,7 +29,7 @@ public class LiftTask extends RunEachFrameTask {
       Robot.instance.sensors.liftEncoder.reset();
       Robot.instance.motors.lifter.stop();
     }
-    Robot.instance.motors.lifter.set(movementAmount+0.01);
+    Robot.instance.motors.lifter.set(movementAmount+0.05);
     
   }
 }

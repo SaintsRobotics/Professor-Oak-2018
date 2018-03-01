@@ -6,8 +6,8 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.PIDSource;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import com.saintsrobotics.hickoryhumpcamel.util.PIDConfiguration;
 import com.saintsrobotics.hickoryhumpcamel.util.PIDReceiver;
+import com.saintsrobotics.hickoryhumpcamel.util.TurnConfiguration;
 
 public class TurnToHeadingTask extends Task {
   private double heading;
@@ -15,7 +15,7 @@ public class TurnToHeadingTask extends Task {
   private PIDController headingPidController;
   private PIDSource gyro;
 
-  public TurnToHeadingTask(double heading, PIDConfiguration pidConfig) {
+  public TurnToHeadingTask(double heading, TurnConfiguration pidConfig) {
     this.heading = heading;
     this.gyro = pidConfig.gyro;
     this.headingPidReceiver = new PIDReceiver();

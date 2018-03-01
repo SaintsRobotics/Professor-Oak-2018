@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class ArcadeDrive extends RunEachFrameTask {
   @Override
   public void runEachFrame() {
-    double speedMultiplier = (Robot.instance.flags.liftEncoderValue > 2.8) ? Math.abs( (4 - Robot.instance.flags.liftEncoderValue) / 4) : 1;
+    double speedMultiplier = (Robot.instance.flags.liftEncoderValue > 2.8) ? Math.abs( (4.5 - Robot.instance.flags.liftEncoderValue) / 4.5) : 1;
     SmartDashboard.putNumber("speedMultiplier", speedMultiplier);
 
     double forward = -Robot.instance.oi.xboxInput.leftStickY() * 0.8;

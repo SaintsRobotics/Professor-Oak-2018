@@ -1,7 +1,7 @@
 package com.saintsrobotics.hickoryhumpcamel.tasks.auton;
 
 import com.saintsrobotics.hickoryhumpcamel.Robot;
-import com.saintsrobotics.hickoryhumpcamel.util.PIDConfiguration;
+import com.saintsrobotics.hickoryhumpcamel.util.ForwardConfiguration;
 import com.saintsrobotics.hickoryhumpcamel.util.PIDReceiver;
 import com.github.dozer.coroutine.Task;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -19,7 +19,7 @@ public class ForwardAtHeadingTask extends Task {
   private PIDReceiver distancePidReceiver;
   private PIDController distancePidController;
 
-  public ForwardAtHeadingTask(double heading, double distance, PIDConfiguration pidConfig) {
+  public ForwardAtHeadingTask(double heading, double distance, ForwardConfiguration pidConfig) {
     this.heading = heading;
     this.distance = distance;
     this.gyro = pidConfig.gyro;

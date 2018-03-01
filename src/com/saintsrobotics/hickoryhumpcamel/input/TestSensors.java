@@ -11,6 +11,8 @@ public class TestSensors extends Sensors {
   @Override
   public void init() {
     this.gyro = new ADXRS450_Gyro();
+    
+    //these are limit switches
     this.lifterDown = new DigitalInput(8);
     this.lifterUp = new DigitalInput(7);
   

@@ -12,13 +12,16 @@ import com.saintsrobotics.hickoryhumpcamel.input.OI;
 import com.saintsrobotics.hickoryhumpcamel.input.Sensors;
 import com.saintsrobotics.hickoryhumpcamel.input.TestSensors;
 import com.saintsrobotics.hickoryhumpcamel.output.*;
+import com.saintsrobotics.hickoryhumpcamel.tasks.auton.AutonLiftTask;
 import com.saintsrobotics.hickoryhumpcamel.tasks.auton.ForwardAtHeadingTask;
 import com.saintsrobotics.hickoryhumpcamel.tasks.auton.TurnToHeadingTask;
 import com.saintsrobotics.hickoryhumpcamel.tasks.teleop.ArcadeDrive;
 import com.saintsrobotics.hickoryhumpcamel.tasks.teleop.InTakeWheel;
 import com.saintsrobotics.hickoryhumpcamel.tasks.teleop.LiftTask;
 import com.saintsrobotics.hickoryhumpcamel.tasks.teleop.OutTakeWheel;
-import com.saintsrobotics.hickoryhumpcamel.util.PIDConfiguration;
+import com.saintsrobotics.hickoryhumpcamel.util.ForwardConfiguration;
+import com.saintsrobotics.hickoryhumpcamel.util.LiftConfiguration;
+import com.saintsrobotics.hickoryhumpcamel.util.TurnConfiguration;
 import com.saintsrobotics.hickoryhumpcamel.util.UpdateMotors;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
@@ -38,8 +41,8 @@ public class Robot extends TaskRobot {
   public OI oi;
   public Flags flags;
   public Sensors sensors;
-  public PIDConfiguration forwardPidConfig;
-  public PIDConfiguration turnPidConfig;
+  public ForwardConfiguration forwardPidConfig;
+  public TurnConfiguration turnPidConfig;
   //public SpeedController[] temp;
   public PowerDistributionPanel pdp;
   public static Robot instance;
@@ -56,8 +59,8 @@ public class Robot extends TaskRobot {
     this.sensors = new TestSensors();
     
     this.sensors.init();
-    this.forwardPidConfig = new PIDConfiguration(this.sensors.gyro, this.sensors.average);
-    this.turnPidConfig = new PIDConfiguration(this.sensors.gyro);
+    this.forwardPidConfig = new ForwardConfiguration(this.sensors.gyro, this.sensors.average);
+    this.turnPidConfig = new TurnConfiguration(this.sensors.gyro);
     
     this.pdp = new PowerDistributionPanel();
   }
@@ -69,12 +72,12 @@ public class Robot extends TaskRobot {
     this.sensors.rightEncoder.reset();
     this.sensors.gyro.reset();
     this.autonomousTasks = new Task[]   {new RunSequentialTask(
-        new ForwardAtHeadingTask(0, 48, new PIDConfiguration(this.sensors.gyro, this.sensors.average)),
-        new TurnToHeadingTask(90, new PIDConfiguration(this.sensors.gyro)),
-        new ForwardAtHeadingTask(90, 48, new PIDConfiguration(this.sensors.gyro, this.sensors.average)),
-        new TurnToHeadingTask(180, new PIDConfiguration(this.sensors.gyro)),
-        new ForwardAtHeadingTask(180, 48, new PIDConfiguration(this.sensors.gyro, this.sensors.average)),
-        new TurnToHeadingTask(270, new PIDConfiguration(this.sensors.gyro))
+        new ForwardAtHeadingTask(0, 60, new ForwardConfiguration(this.sensors.gyro, this.sensors.average)),
+        new TurnToHeadingTask(45, new TurnConfiguration(this.sensors.gyro)),
+        new ForwardAtHeadingTask(0, 36, new ForwardConfiguration(this.sensors.gyro, this.sensors.average)),
+        new TurnToHeadingTask(-45, new TurnConfiguration(this.sensors.gyro)),
+        new ForwardAtHeadingTask(0, 53.836, new ForwardConfiguration(this.sensors.gyro, this.sensors.average)),
+        new AutonLiftTask(18, new LiftConfiguration(this.sensors.liftEncoder))
         ), new UpdateMotors(this.motors),
         new RunEachFrameTask() {
 
@@ -128,7 +131,10 @@ public class Robot extends TaskRobot {
         
           SmartDashboard.putNumber("Right Current", motors.rightBack.get());
           SmartDashboard.putNumber("left Current", motors.leftBack.get());
+      SmartDashboard.putBoolean("intake", sensors.intake.get());
       }
+      
+      
       
     }, new UpdateMotors(this.motors)};
     
