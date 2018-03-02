@@ -64,6 +64,7 @@ public class Robot extends TaskRobot {
     this.turnPidConfig = new TurnConfiguration(this.sensors.gyro);
     
     this.pdp = new PowerDistributionPanel();
+    //TODO: Add taskChooser 
   }
 
   @Override
