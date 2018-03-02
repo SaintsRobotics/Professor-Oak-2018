@@ -5,6 +5,7 @@ import com.github.dozer.TaskRobot;
 import com.github.dozer.coroutine.Task;
 import com.github.dozer.coroutine.helpers.RunContinuousTask;
 import com.github.dozer.coroutine.helpers.RunEachFrameTask;
+import com.github.dozer.coroutine.helpers.RunParallelTask;
 import com.github.dozer.coroutine.helpers.RunSequentialTask;
 import com.github.dozer.output.Motor;
 import com.github.dozer.output.MotorSimple;
@@ -19,6 +20,8 @@ import com.saintsrobotics.hickoryhumpcamel.tasks.teleop.ArcadeDrive;
 import com.saintsrobotics.hickoryhumpcamel.tasks.teleop.InTakeWheel;
 import com.saintsrobotics.hickoryhumpcamel.tasks.teleop.LiftTask;
 import com.saintsrobotics.hickoryhumpcamel.tasks.teleop.OutTakeWheel;
+import com.saintsrobotics.hickoryhumpcamel.tasks.teleop.WingsDropTask;
+import com.saintsrobotics.hickoryhumpcamel.tasks.teleop.WingsTask;
 import com.saintsrobotics.hickoryhumpcamel.util.ForwardConfiguration;
 import com.saintsrobotics.hickoryhumpcamel.util.LiftConfiguration;
 import com.saintsrobotics.hickoryhumpcamel.util.TurnConfiguration;
@@ -102,24 +105,19 @@ public class Robot extends TaskRobot {
     }catch(NullPointerException t) {
       DriverStation.reportError("You didn't connect the gyro you dum dum", false);
     }
-    this.teleopTasks = new Task[] {new ArcadeDrive(), new InTakeWheel(), new OutTakeWheel(), new LiftTask(), new RunEachFrameTask() {
+    this.teleopTasks = new Task[] {new ArcadeDrive(), new InTakeWheel(), new OutTakeWheel(), new LiftTask(), 
+        new RunSequentialTask(
+            new WingsDropTask(),
+            new RunParallelTask(
+                new WingsTask(motors.leftWing, WingsTask.left),
+                new WingsTask(motors.rightWing, WingsTask.right)
+            )
+        ),
+        
+        new RunEachFrameTask() {
 
       @Override
       protected void runEachFrame() {
-        //right Wing
-        double moveAmount =0;
-        if(Robot.instance.oi.xboxInput.B()) moveAmount += 1;
-        if(Robot.instance.oi.xboxInput.X()) moveAmount -= 1;
-        
-        Robot.instance.motors.rightWing.set(moveAmount);
-        
-        //left wing
-        moveAmount = 0;
-        if(Robot.instance.oi.xboxInput.Y()) moveAmount += 1;
-        if(Robot.instance.oi.xboxInput.A()) moveAmount -= 1;
-        
-        Robot.instance.motors.leftWing.set(moveAmount);
-        
         
         //Other Debug Code
         SmartDashboard.putNumber("Encoder Distance", sensors.leftEncoder.get());
