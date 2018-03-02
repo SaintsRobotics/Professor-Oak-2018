@@ -46,6 +46,7 @@ public class Robot extends TaskRobot {
   //public SpeedController[] temp;
   public PowerDistributionPanel pdp;
   public static Robot instance;
+  public boolean switchStatus; //left True right False
 
   @Override
   public void robotInit() {
@@ -71,24 +72,25 @@ public class Robot extends TaskRobot {
     this.sensors.leftEncoder.reset();
     this.sensors.rightEncoder.reset();
     this.sensors.gyro.reset();
-    this.autonomousTasks = new Task[]   {new RunSequentialTask(
-        new ForwardAtHeadingTask(0, 60, new ForwardConfiguration(this.sensors.gyro, this.sensors.average)),
-        new TurnToHeadingTask(45, new TurnConfiguration(this.sensors.gyro)),
-        new ForwardAtHeadingTask(0, 36, new ForwardConfiguration(this.sensors.gyro, this.sensors.average)),
-        new TurnToHeadingTask(-45, new TurnConfiguration(this.sensors.gyro)),
-        new ForwardAtHeadingTask(0, 53.836, new ForwardConfiguration(this.sensors.gyro, this.sensors.average)),
-        new AutonLiftTask(18, new LiftConfiguration(this.sensors.liftEncoder))
-        ), new UpdateMotors(this.motors),
+	this.switchStatus = DriverStation.getInstance().getGameSpecificMessage().charAt(0) == 'L';
+    this.autonomousTasks = new Task[]   {
+    		new RunSequentialTask(
+    				new ForwardAtHeadingTask(0, 60, new ForwardConfiguration(this.sensors.gyro, this.sensors.average)),
+    				new TurnToHeadingTask(45, new TurnConfiguration(this.sensors.gyro)),
+    				new ForwardAtHeadingTask(0, 36, new ForwardConfiguration(this.sensors.gyro, this.sensors.average)),
+    				new TurnToHeadingTask(-45, new TurnConfiguration(this.sensors.gyro)),
+    				new ForwardAtHeadingTask(0, 53.836, new ForwardConfiguration(this.sensors.gyro, this.sensors.average)),
+    				new AutonLiftTask(18, new LiftConfiguration(this.sensors.liftEncoder))
+        ), 
+    	new UpdateMotors(this.motors),
         new RunEachFrameTask() {
-
-      @Override
-      protected void runEachFrame() {
-        SmartDashboard.putNumber("Encoder Distance", sensors.leftEncoder.get());
-        SmartDashboard.putNumber("Encoder Avg Distance", sensors.average.pidGet());
-
-      }
-      
-    }};
+	      @Override
+	      protected void runEachFrame() {
+	        SmartDashboard.putNumber("Encoder Distance", sensors.leftEncoder.get());
+	        SmartDashboard.putNumber("Encoder Avg Distance", sensors.average.pidGet());
+	      }
+    	}
+    };
     super.autonomousInit();
   }
 
