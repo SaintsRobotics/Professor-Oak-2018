@@ -27,11 +27,9 @@ public class WingsTask extends RunEachFrameTask {
 
   @Override
   protected void runEachFrame() {
-    double moveAmount = 0;
-    if(this.outCondition.getAsBoolean()) moveAmount += 1;
-    if(this.inCondition.getAsBoolean()) moveAmount -= 1;
+    if(this.outCondition.getAsBoolean()) this.wingMotor.set(1);
+    else if(this.inCondition.getAsBoolean()) this.wingMotor.set(-1);
     else this.wingMotor.stop();
-    this.wingMotor.set(moveAmount);
   }
 
 }

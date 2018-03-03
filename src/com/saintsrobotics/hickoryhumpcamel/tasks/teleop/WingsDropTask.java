@@ -9,7 +9,7 @@ public class WingsDropTask extends Task {
     wait.forSeconds(105);
     wait.until(()->Robot.instance.oi.xboxInput.START());
     Robot.instance.motors.leftWing.set(-1);
-    wait.untilWithTimeout(()->!Robot.instance.sensors.wingsLeftIn.get() || !Robot.instance.sensors.wingsRightIn.get(), 0.2);
+    wait.untilWithTimeout(()->Robot.instance.sensors.wingsLeftIn.get() || Robot.instance.sensors.wingsRightIn.get(), 0.2);
     Robot.instance.motors.leftWing.set(0);
     Robot.instance.motors.leftWing.stop();
   }
