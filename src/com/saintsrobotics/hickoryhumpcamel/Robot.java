@@ -109,8 +109,8 @@ public class Robot extends TaskRobot {
         new RunSequentialTask(
             new WingsDropTask(),
             new RunParallelTask(
-                new WingsTask(motors.leftWing, WingsTask.left),
-                new WingsTask(motors.rightWing, WingsTask.right)
+                new WingsTask(motors.leftWing, WingsTask.leftIn, WingsTask.leftOut),
+                new WingsTask(motors.rightWing, WingsTask.rightIn, WingsTask.rightOut)
             )
         ),
         
