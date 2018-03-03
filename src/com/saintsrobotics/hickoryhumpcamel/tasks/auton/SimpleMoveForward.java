@@ -7,8 +7,12 @@ public class SimpleMoveForward extends Task {
 
   @Override
   protected void runTask() {
-    Robot.instance.motors.leftDrive.set(0.2);
-    Robot.instance.motors.rightDrive.set(0.2);
+    Robot.instance.motors.leftDrive.set(0.3);
+    Robot.instance.motors.rightDrive.set(0.3);
     wait.forSeconds(5.0);
+    Robot.instance.motors.leftDrive.set(0);
+    Robot.instance.motors.leftDrive.stop();
+    Robot.instance.motors.rightDrive.set(0.3);
+    Robot.instance.motors.rightDrive.stop();
   }
 }
