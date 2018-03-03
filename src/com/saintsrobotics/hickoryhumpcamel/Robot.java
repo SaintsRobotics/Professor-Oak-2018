@@ -1,5 +1,7 @@
 package com.saintsrobotics.hickoryhumpcamel;
 
+import java.util.function.Supplier;
+
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.github.dozer.TaskRobot;
 import com.github.dozer.coroutine.Task;
@@ -16,6 +18,10 @@ import com.saintsrobotics.hickoryhumpcamel.output.*;
 import com.saintsrobotics.hickoryhumpcamel.tasks.auton.AutonLiftTask;
 import com.saintsrobotics.hickoryhumpcamel.tasks.auton.ForwardAtHeadingTask;
 import com.saintsrobotics.hickoryhumpcamel.tasks.auton.TurnToHeadingTask;
+import com.saintsrobotics.hickoryhumpcamel.tasks.auton.choose.CenterSwitchAuton;
+import com.saintsrobotics.hickoryhumpcamel.tasks.auton.choose.CrossBaselineAuton;
+import com.saintsrobotics.hickoryhumpcamel.tasks.auton.choose.LeftSwitchAuton;
+import com.saintsrobotics.hickoryhumpcamel.tasks.auton.choose.RightSwitchAuton;
 import com.saintsrobotics.hickoryhumpcamel.tasks.teleop.ArcadeDrive;
 import com.saintsrobotics.hickoryhumpcamel.tasks.teleop.InTakeWheel;
 import com.saintsrobotics.hickoryhumpcamel.tasks.teleop.LiftTask;
@@ -30,6 +36,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.Talon;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
@@ -39,6 +46,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * resource directory.
  */
 public class Robot extends TaskRobot {
+	
+    private SendableChooser<Supplier<Task>> taskChooser = new SendableChooser<>();
+
 
   public RobotMotors motors;
   public OI oi;
@@ -49,6 +59,7 @@ public class Robot extends TaskRobot {
   //public SpeedController[] temp;
   public PowerDistributionPanel pdp;
   public static Robot instance;
+  public boolean switchStatus; //left True right False
 
   @Override
   public void robotInit() {
@@ -66,6 +77,12 @@ public class Robot extends TaskRobot {
     this.turnPidConfig = new TurnConfiguration(this.sensors.gyro);
     
     this.pdp = new PowerDistributionPanel();
+    
+    taskChooser.addDefault("LeftSwitchAuton", LeftSwitchAuton::new);
+    taskChooser.addObject("RightSwitchAuton", RightSwitchAuton::new);
+    taskChooser.addObject("CenterSwitchAuton", CenterSwitchAuton::new);
+    taskChooser.addObject("CrossBaselineAuton", CrossBaselineAuton::new);
+    SmartDashboard.putData("Autonomous2", taskChooser);
   }
 
   @Override
@@ -74,24 +91,19 @@ public class Robot extends TaskRobot {
     this.sensors.leftEncoder.reset();
     this.sensors.rightEncoder.reset();
     this.sensors.gyro.reset();
-    this.autonomousTasks = new Task[]   {new RunSequentialTask(
-        new ForwardAtHeadingTask(0, 60, new ForwardConfiguration(this.sensors.gyro, this.sensors.average)),
-        new TurnToHeadingTask(45, new TurnConfiguration(this.sensors.gyro)),
-        new ForwardAtHeadingTask(0, 36, new ForwardConfiguration(this.sensors.gyro, this.sensors.average)),
-        new TurnToHeadingTask(-45, new TurnConfiguration(this.sensors.gyro)),
-        new ForwardAtHeadingTask(0, 53.836, new ForwardConfiguration(this.sensors.gyro, this.sensors.average)),
-        new AutonLiftTask(18, new LiftConfiguration(this.sensors.liftEncoder))
-        ), new UpdateMotors(this.motors),
+	this.switchStatus = DriverStation.getInstance().getGameSpecificMessage().charAt(0) == 'L';
+    this.autonomousTasks = new Task[]   {
+    		new RunSequentialTask(taskChooser.getSelected().get(), new AutonLiftTask(18, new LiftConfiguration(this.sensors.liftEncoder))
+        ), 
+    	new UpdateMotors(this.motors),
         new RunEachFrameTask() {
-
-      @Override
-      protected void runEachFrame() {
-        SmartDashboard.putNumber("Encoder Distance", sensors.leftEncoder.get());
-        SmartDashboard.putNumber("Encoder Avg Distance", sensors.average.pidGet());
-
-      }
-      
-    }};
+	      @Override
+	      protected void runEachFrame() {
+	        SmartDashboard.putNumber("Encoder Distance", sensors.leftEncoder.get());
+	        SmartDashboard.putNumber("Encoder Avg Distance", sensors.average.pidGet());
+	      }
+    	}
+    };
     super.autonomousInit();
   }
 
