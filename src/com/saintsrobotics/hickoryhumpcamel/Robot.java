@@ -17,6 +17,7 @@ import com.saintsrobotics.hickoryhumpcamel.input.TestSensors;
 import com.saintsrobotics.hickoryhumpcamel.output.*;
 import com.saintsrobotics.hickoryhumpcamel.tasks.auton.AutonLiftTask;
 import com.saintsrobotics.hickoryhumpcamel.tasks.auton.ForwardAtHeadingTask;
+import com.saintsrobotics.hickoryhumpcamel.tasks.auton.SimpleMoveForward;
 import com.saintsrobotics.hickoryhumpcamel.tasks.auton.TurnToHeadingTask;
 import com.saintsrobotics.hickoryhumpcamel.tasks.auton.choose.CenterSwitchAuton;
 import com.saintsrobotics.hickoryhumpcamel.tasks.auton.choose.CrossBaselineAuton;
@@ -93,8 +94,8 @@ public class Robot extends TaskRobot {
     this.sensors.gyro.reset();
 	this.switchStatus = DriverStation.getInstance().getGameSpecificMessage().charAt(0) == 'L';
     this.autonomousTasks = new Task[]   {
-    		new RunSequentialTask(taskChooser.getSelected().get(), new AutonLiftTask(18, new LiftConfiguration(this.sensors.liftEncoder))
-        ), 
+    		new SimpleMoveForward(),
+        //new RunSequentialTask(taskChooser.getSelected().get(), new AutonLiftTask(18, new LiftConfiguration(this.sensors.liftEncoder))), 
     	new UpdateMotors(this.motors),
         new RunEachFrameTask() {
 	      @Override
@@ -118,13 +119,13 @@ public class Robot extends TaskRobot {
       DriverStation.reportError("You didn't connect the gyro you dum dum", false);
     }
     this.teleopTasks = new Task[] {new ArcadeDrive(), new InTakeWheel(), new OutTakeWheel(), new LiftTask(), 
-        new RunSequentialTask(
+        /*new RunSequentialTask(
             new WingsDropTask(),
             new RunParallelTask(
                 new WingsTask(motors.leftWing, WingsTask.leftIn, WingsTask.leftOut),
                 new WingsTask(motors.rightWing, WingsTask.rightIn, WingsTask.rightOut)
             )
-        ),
+        ),*/
         
         new RunEachFrameTask() {
 

@@ -12,7 +12,7 @@ public class ArcadeDrive extends RunEachFrameTask {
     SmartDashboard.putNumber("speedMultiplier", speedMultiplier);
 
     double forward = -Robot.instance.oi.xboxInput.leftStickY() * 0.8;
-    double turn = -Robot.instance.oi.xboxInput.rightStickX() * 0.8;
+    double turn = -Robot.instance.oi.xboxInput.rightStickX() * (Robot.instance.oi.xboxInput.B()? 0.9 : 0.45);
     Robot.instance.motors.leftDrive.set((forward - turn) * speedMultiplier);
     Robot.instance.motors.rightDrive.set((forward + turn) * speedMultiplier);
   }

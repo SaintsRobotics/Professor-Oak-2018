@@ -18,12 +18,12 @@ public class ForwardConfiguration {
   
   public ForwardConfiguration(PIDSource gyro, PIDSource average) {
     Preferences prefs = Preferences.getInstance();
-    this.forwardDistanceKP =  prefs.getDouble("forwardDistanceKP", 0.005);
-    this.forwardDistanceKI = prefs.getDouble("forwardDistanceKI",0.0003);
-    this.forwardDistanceKD = prefs.getDouble("forwardDistanceKD", 0.06);
-    this.forwardHeadingKP = prefs.getDouble("forwardHeadingKP", 0.0025);
-    this.forwardHeadingKI = prefs.getDouble("forwardHeadingKI", 0);
-    this.forwardHeadingKD = prefs.getDouble("forwardHeadingKD", 0);
+    this.forwardDistanceKP =  prefs.getDouble("forwardDistanceKP", 0.4);
+    this.forwardDistanceKI = prefs.getDouble("forwardDistanceKI",0.00000007);
+    this.forwardDistanceKD = prefs.getDouble("forwardDistanceKD", 0.06); //default not in SmartDashboard
+    this.forwardHeadingKP = prefs.getDouble("forwardHeadingKP", 0.03);
+    this.forwardHeadingKI = prefs.getDouble("forwardHeadingKI", 0); //default not in SmartDashboard
+    this.forwardHeadingKD = prefs.getDouble("forwardHeadingKD", 0.07);
 
     this.forwardHeadingTolerance = 1.5;
     this.forwardDistanceTolerance = 1;

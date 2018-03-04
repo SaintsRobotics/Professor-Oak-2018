@@ -13,9 +13,9 @@ public class LiftConfiguration {
 
   public LiftConfiguration(PIDSource liftDistance) {
     Preferences prefs = Preferences.getInstance();
-    this.liftDistanceKP =  prefs.getDouble("forwardDistanceKP", 0.005);
-    this.liftDistanceKI = prefs.getDouble("forwardDistanceKI",0.0003);
-    this.liftDistanceKD = prefs.getDouble("forwardDistanceKD", 0.06);
+    this.liftDistanceKP =  prefs.getDouble("forwardDistanceKP", 0.4);
+    this.liftDistanceKI = prefs.getDouble("forwardDistanceKI",0.00000007);
+    this.liftDistanceKD = prefs.getDouble("forwardDistanceKD", 0.06); //not in SmartDashBoard
     
     this.liftDistanceTolerance = 1;
     this.liftDistance = liftDistance;
