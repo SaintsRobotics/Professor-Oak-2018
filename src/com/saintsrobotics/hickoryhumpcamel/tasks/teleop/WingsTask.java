@@ -12,7 +12,7 @@ public class WingsTask extends RunEachFrameTask {
   public static BooleanSupplier leftOut = () -> Robot.instance.sensors.wingsLeftOut.get() && Robot.instance.oi.xboxInput.Y();
   public static BooleanSupplier leftIn = () -> Robot.instance.sensors.wingsLeftIn.get() && Robot.instance.oi.xboxInput.A();
   public static BooleanSupplier rightOut = () -> Robot.instance.sensors.wingsRightOut.get() && Robot.instance.oi.xboxInput.DPAD_UP();
-  public static BooleanSupplier rightIn = () -> Robot.instance.sensors.wingsRightIn.get() && Robot.instance.oi.xboxInput.DPAD_UP();
+  public static BooleanSupplier rightIn = () -> Robot.instance.sensors.wingsRightIn.get() && Robot.instance.oi.xboxInput.DPAD_DOWN();
 
 
   private Motor wingMotor;

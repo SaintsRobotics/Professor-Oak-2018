@@ -30,7 +30,6 @@ import com.saintsrobotics.hickoryhumpcamel.tasks.teleop.OutTakeWheel;
 import com.saintsrobotics.hickoryhumpcamel.tasks.teleop.WingsDropTask;
 import com.saintsrobotics.hickoryhumpcamel.tasks.teleop.WingsTask;
 import com.saintsrobotics.hickoryhumpcamel.util.ForwardConfiguration;
-import com.saintsrobotics.hickoryhumpcamel.util.LiftConfiguration;
 import com.saintsrobotics.hickoryhumpcamel.util.TurnConfiguration;
 import com.saintsrobotics.hickoryhumpcamel.util.UpdateMotors;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -92,10 +91,10 @@ public class Robot extends TaskRobot {
     this.sensors.leftEncoder.reset();
     this.sensors.rightEncoder.reset();
     this.sensors.gyro.reset();
-	this.switchStatus = DriverStation.getInstance().getGameSpecificMessage().charAt(0) == 'L';
+	this.flags.gameMessage =  DriverStation.getInstance().getGameSpecificMessage(); 
+    this.switchStatus = this.flags.gameMessage.charAt(0) == 'L';
     this.autonomousTasks = new Task[]   {
-    		new SimpleMoveForward(),
-        //new RunSequentialTask(taskChooser.getSelected().get(), new AutonLiftTask(18, new LiftConfiguration(this.sensors.liftEncoder))), 
+        new RunSequentialTask(taskChooser.getSelected().get(), new AutonLiftTask(18, Robot.instance.sensors.liftEncoder)),
     	new UpdateMotors(this.motors),
         new RunEachFrameTask() {
 	      @Override
@@ -119,13 +118,13 @@ public class Robot extends TaskRobot {
       DriverStation.reportError("You didn't connect the gyro you dum dum", false);
     }
     this.teleopTasks = new Task[] {new ArcadeDrive(), new InTakeWheel(), new OutTakeWheel(), new LiftTask(), 
-        /*new RunSequentialTask(
+        new RunSequentialTask(
             new WingsDropTask(),
             new RunParallelTask(
                 new WingsTask(motors.leftWing, WingsTask.leftIn, WingsTask.leftOut),
                 new WingsTask(motors.rightWing, WingsTask.rightIn, WingsTask.rightOut)
             )
-        ),*/
+        ),
         
         new RunEachFrameTask() {
 
@@ -133,7 +132,8 @@ public class Robot extends TaskRobot {
       protected void runEachFrame() {
         
         //Other Debug Code
-        SmartDashboard.putNumber("Encoder Distance", sensors.leftEncoder.get());
+        SmartDashboard.putNumber("Left Encoder Distance", sensors.leftEncoder.get());
+        SmartDashboard.putNumber("Right Encoder Distance", sensors.rightEncoder.get());
         SmartDashboard.putNumber("Encoder Avg Distance", sensors.average.pidGet());
         
         for (int i : new int[] { 0, 1, 2, 3, 12, 13, 14, 15 }) {
@@ -175,13 +175,14 @@ public class Robot extends TaskRobot {
   }
   @Override
   public void disabledInit() {
-    this.sensors.leftEncoder.reset();
-    this.sensors.rightEncoder.reset();
+    //this.sensors.leftEncoder.reset();
+    //this.sensors.rightEncoder.reset();
     this.disabledTasks = new Task[] {new RunEachFrameTask() {
 
       @Override
       protected void runEachFrame() {
-        SmartDashboard.putNumber("Encoder Distance", sensors.leftEncoder.get());
+        SmartDashboard.putNumber("Left Encoder Distance", sensors.leftEncoder.get());
+        SmartDashboard.putNumber("Right Encoder Distance", sensors.rightEncoder.get());
         SmartDashboard.putNumber("Encoder Avg Distance", sensors.average.pidGet());
 
       }

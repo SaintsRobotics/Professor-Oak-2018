@@ -8,7 +8,7 @@ import com.saintsrobotics.hickoryhumpcamel.util.ForwardConfiguration;
 public class CrossBaselineAuton extends RunSequentialTask {
 	
 	public CrossBaselineAuton() {
-		super(new ForwardAtHeadingTask(0, 4, new ForwardConfiguration(Robot.instance.sensors.gyro, Robot.instance.sensors.average)));
+		super(new ForwardAtHeadingTask(0, 4, Robot.instance.sensors.forwardConfig));
 	}
 
 }

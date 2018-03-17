@@ -1,7 +1,6 @@
 package com.saintsrobotics.hickoryhumpcamel.tasks.auton.choose;
 
-
-	import java.util.ArrayList;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.github.dozer.coroutine.Task;
@@ -13,40 +12,31 @@ import com.saintsrobotics.hickoryhumpcamel.util.ForwardConfiguration;
 import com.saintsrobotics.hickoryhumpcamel.util.TurnConfiguration;
 
 	public class CenterSwitchAuton extends RunSequentialTask {
-		public CenterSwitchAuton() {
+		
+	    public CenterSwitchAuton() {
 			super(taskChoose());
 		}
 
 		private static Task[] taskChoose() { 
-			List<Task> taskList = new ArrayList<Task>(); 
+		  List<Task> taskList = new ArrayList<Task>(); 
 			if(Robot.instance.switchStatus) {
-				taskList.add(new TurnToHeadingTask(-45, new TurnConfiguration(Robot.instance.sensors.gyro)));
-				taskList.add(new ForwardAtHeadingTask(-45, 3.4, new ForwardConfiguration(Robot.instance.sensors.gyro, Robot.instance.sensors.average)));
-				taskList.add(new TurnToHeadingTask(0, new TurnConfiguration(Robot.instance.sensors.gyro)));
-				taskList.add(new ForwardAtHeadingTask(0, 3.9, new ForwardConfiguration(Robot.instance.sensors.gyro, Robot.instance.sensors.average)));
-				taskList.add(new TurnToHeadingTask(45, new TurnConfiguration(Robot.instance.sensors.gyro)));
-				taskList.add(new ForwardAtHeadingTask(45, 3.17, new ForwardConfiguration(Robot.instance.sensors.gyro, Robot.instance.sensors.average)));
-				taskList.add(new TurnToHeadingTask(0, new TurnConfiguration(Robot.instance.sensors.gyro)));
-				taskList.add(new ForwardAtHeadingTask(0, 4.52, new ForwardConfiguration(Robot.instance.sensors.gyro, Robot.instance.sensors.average)));
-				taskList.add(new TurnToHeadingTask(45, new TurnConfiguration(Robot.instance.sensors.gyro)));
-				taskList.add(new ForwardAtHeadingTask(45, 1.9, new ForwardConfiguration(Robot.instance.sensors.gyro, Robot.instance.sensors.average)));
-				taskList.add(new TurnToHeadingTask(0, new TurnConfiguration(Robot.instance.sensors.gyro)));
-				taskList.add(new ForwardAtHeadingTask(0, 1.54, new ForwardConfiguration(Robot.instance.sensors.gyro, Robot.instance.sensors.average)));
-
+			    //goes to left side of switch
+				taskList.add(new TurnToHeadingTask(-45, Robot.instance.sensors.turnConfig));
+				taskList.add(new ForwardAtHeadingTask(0, 55.589, Robot.instance.sensors.forwardConfig));
+				taskList.add(new TurnToHeadingTask(45, Robot.instance.sensors.turnConfig));
+				taskList.add(new ForwardAtHeadingTask(0, 67.607, Robot.instance.sensors.forwardConfig));
 			}
 			else { 
-				taskList.add(new TurnToHeadingTask(45, new TurnConfiguration(Robot.instance.sensors.gyro)));
-				taskList.add(new ForwardAtHeadingTask(45, 4.77, new ForwardConfiguration(Robot.instance.sensors.gyro, Robot.instance.sensors.average)));
-				taskList.add(new TurnToHeadingTask(0, new TurnConfiguration(Robot.instance.sensors.gyro)));
-				taskList.add(new ForwardAtHeadingTask(0, 8.47, new ForwardConfiguration(Robot.instance.sensors.gyro, Robot.instance.sensors.average)));
-				taskList.add(new TurnToHeadingTask(-45, new TurnConfiguration(Robot.instance.sensors.gyro)));
-				taskList.add(new ForwardAtHeadingTask(-45, 3.85, new ForwardConfiguration(Robot.instance.sensors.gyro, Robot.instance.sensors.average)));
-				taskList.add(new TurnToHeadingTask(0, new TurnConfiguration(Robot.instance.sensors.gyro)));
-				taskList.add(new ForwardAtHeadingTask(0, 3.49, new ForwardConfiguration(Robot.instance.sensors.gyro, Robot.instance.sensors.average)));
-				taskList.add(new TurnToHeadingTask(-45, new TurnConfiguration(Robot.instance.sensors.gyro)));
-				taskList.add(new ForwardAtHeadingTask(-45, 1.92, new ForwardConfiguration(Robot.instance.sensors.gyro, Robot.instance.sensors.average)));
-				taskList.add(new TurnToHeadingTask(0, new TurnConfiguration(Robot.instance.sensors.gyro)));
-				taskList.add(new ForwardAtHeadingTask(0, 2.8, new ForwardConfiguration(Robot.instance.sensors.gyro, Robot.instance.sensors.average)));
+			    //goes to right side of switch
+				taskList.add(new ForwardAtHeadingTask(0, 3.5, Robot.instance.sensors.forwardConfig));
+				taskList.add(new TurnToHeadingTask(45, Robot.instance.sensors.turnConfig));
+				taskList.add(new ForwardAtHeadingTask(0, 57.28, Robot.instance.sensors.forwardConfig));
+				taskList.add(new TurnToHeadingTask(45, Robot.instance.sensors.turnConfig));
+				taskList.add(new ForwardAtHeadingTask(0, 37.366, Robot.instance.sensors.forwardConfig));
+				taskList.add(new TurnToHeadingTask(-45, Robot.instance.sensors.turnConfig));
+				taskList.add(new ForwardAtHeadingTask(0, 35.875, Robot.instance.sensors.forwardConfig));
+				taskList.add(new TurnToHeadingTask(-45, Robot.instance.sensors.turnConfig));
+                taskList.add(new ForwardAtHeadingTask(0, 37.545, Robot.instance.sensors.forwardConfig));
 			}
 			return taskList.toArray(new Task[taskList.size()]);
 		}

@@ -16,8 +16,8 @@ public class TestBotMotors extends RobotMotors {
     
     this.leftDrive = new MotorGroup(this.leftBack, this.leftFront);
     this.rightDrive = new MotorGroup(this.rightBack, this.rightFront);
-    this.intake = new MotorSimple(new Talon(4), false);
-    this.lifter = new MotorSimple(new Talon(5), false);
+    this.intake = new MotorSimple(new Talon(5), false);
+    this.lifter = new MotorSimple(new Talon(4), false);
     
     this.rightWing = new MotorSimple(new Talon(8), false);
     this.leftWing = new MotorSimple(new Talon(1), false);

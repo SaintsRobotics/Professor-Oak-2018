@@ -1,23 +1,30 @@
 package com.saintsrobotics.hickoryhumpcamel.input;
 
+import com.saintsrobotics.hickoryhumpcamel.Robot;
 import com.saintsrobotics.hickoryhumpcamel.util.AveragePIDSources;
 import com.saintsrobotics.hickoryhumpcamel.util.DistanceEncoder;
+import com.saintsrobotics.hickoryhumpcamel.util.ForwardConfiguration;
+import com.saintsrobotics.hickoryhumpcamel.util.TurnConfiguration;
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.PIDSourceType;
 
 public class TestSensors extends Sensors {
 
   @Override
   public void init() {
     this.gyro = new ADXRS450_Gyro();
-    this.leftEncoder = new DistanceEncoder(1, 2, 161.9666666667, true);
-    this.rightEncoder = new DistanceEncoder(3, 4, 161.9666666667, false);
+    //Original value 162.9 for inches
+    this.leftEncoder = new Encoder(1, 2, true);
+    this.rightEncoder = new Encoder(3, 4, false);
+    this.leftEncoder.setDistancePerPulse(1/167.0);
+    this.rightEncoder.setDistancePerPulse(1/167.0);
     this.average = new AveragePIDSources(this.leftEncoder, this.rightEncoder,false, false);
     
     this.lifterDown = new DigitalInput(8);
     this.lifterUp = new DigitalInput(7);
-    this.liftEncoder = new DistanceEncoder(6, 5, -1528, false);
+    this.liftEncoder = new DistanceEncoder(6, 5, 1528, true);
     
     //SMASH
     this.intake = new DigitalInput(19);
@@ -26,6 +33,9 @@ public class TestSensors extends Sensors {
     this.wingsLeftIn = new DigitalInput(23);
     this.wingsRightOut = new DigitalInput(13);
     this.wingsRightIn = new DigitalInput(12);
+    
+    this.forwardConfig = new ForwardConfiguration(Robot.instance.sensors.gyro, Robot.instance.sensors.average);
+    this.turnConfig = new TurnConfiguration(Robot.instance.sensors.gyro);
     
   }
 }

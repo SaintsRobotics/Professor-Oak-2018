@@ -1,6 +1,8 @@
 package com.saintsrobotics.hickoryhumpcamel.input;
 
 import com.saintsrobotics.hickoryhumpcamel.util.AveragePIDSources;
+import com.saintsrobotics.hickoryhumpcamel.util.ForwardConfiguration;
+import com.saintsrobotics.hickoryhumpcamel.util.TurnConfiguration;
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Encoder;
@@ -22,6 +24,8 @@ public abstract class Sensors {
   public DigitalInput wingsRightOut;
   public DigitalInput wingsRightIn;
   
+  public ForwardConfiguration forwardConfig;
+  public TurnConfiguration turnConfig;
   
   public abstract void init();
 }

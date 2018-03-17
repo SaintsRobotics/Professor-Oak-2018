@@ -1,5 +1,6 @@
 package com.saintsrobotics.hickoryhumpcamel.util;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.PIDSource;
 import edu.wpi.first.wpilibj.PIDSourceType;
 
@@ -32,6 +33,7 @@ public class AveragePIDSources implements PIDSource {
   public double pidGet() {
     double source1Value = source1.pidGet() * source1Multiplier;
     double source2Value = source2.pidGet() * source2Multiplier;
+    DriverStation.reportWarning("LEft " + source1Value + " Right " + source2Value, false);
     return (source1Value + source2Value) / 2;
   }
 }

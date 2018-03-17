@@ -14,12 +14,12 @@ public class TurnConfiguration {
   
   public TurnConfiguration(PIDSource gyro) {
     Preferences prefs = Preferences.getInstance();
-    this.turnHeadingKP = prefs.getDouble("turnHeadingKP", 0.03);
-    this.turnHeadingKI = prefs.getDouble("turnHeadingKI", 0.0);
-    this.turnHeadingKD = prefs.getDouble("turnHeadingKD", 0.07);
+    this.turnHeadingKP = prefs.getDouble("turnHeadingKP", 0.07);
+    this.turnHeadingKI = prefs.getDouble("turnHeadingKI", 0.000002);
+    this.turnHeadingKD = prefs.getDouble("turnHeadingKD", 0.1405);
     DriverStation.reportWarning("Turn heading KP" + this.turnHeadingKP, false);
 
-    this.turnHeadingTolerance = 1.75;
+    this.turnHeadingTolerance = 2.5;
     this.gyro = gyro;
   }
 
