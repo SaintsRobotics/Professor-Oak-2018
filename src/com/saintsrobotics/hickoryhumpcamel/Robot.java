@@ -15,6 +15,7 @@ import com.saintsrobotics.hickoryhumpcamel.input.Sensors;
 import com.saintsrobotics.hickoryhumpcamel.input.TestSensors;
 import com.saintsrobotics.hickoryhumpcamel.output.*;
 import com.saintsrobotics.hickoryhumpcamel.tasks.auton.AutonLiftTask;
+import com.saintsrobotics.hickoryhumpcamel.tasks.auton.EncoderReportTask;
 import com.saintsrobotics.hickoryhumpcamel.tasks.auton.ForwardAtHeadingTask;
 import com.saintsrobotics.hickoryhumpcamel.tasks.auton.TurnToHeadingTask;
 import com.saintsrobotics.hickoryhumpcamel.tasks.auton.choose.CenterSwitchAuton;
@@ -43,114 +44,108 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * resource directory.
  */
 public class Robot extends TaskRobot {
-	
-    private SendableChooser<Supplier<Task>> taskChooser = new SendableChooser<>();
+
+	private SendableChooser<Supplier<Task>> taskChooser = new SendableChooser<>();
+
+	public RobotMotors motors;
+	public OI oi;
+	public Flags flags;
+	public Sensors sensors;
+
+	public PowerDistributionPanel pdp;
+	public static Robot instance;
 
 
-  public RobotMotors motors;
-  public OI oi;
-  public Flags flags;
-  public Sensors sensors;
-  public ForwardConfiguration forwardPidConfig;
-  public TurnConfiguration turnPidConfig;
-  //public SpeedController[] temp;
-  public PowerDistributionPanel pdp;
-  public static Robot instance;
-  public boolean switchStatus; //left True right False
+	@Override
+	public void robotInit() {
+		Robot.instance = this;
+		this.oi = new OI();
+		this.motors = new TestBotMotors();
+		this.motors.init();
+		this.flags = new Flags();
+		this.sensors = new TestSensors();
 
-  @Override
-  public void robotInit() {
-    Robot.instance = this;
-    this.oi = new OI();
-    this.motors = new TestBotMotors();
-    this.motors.init();
-    //this.temp = new SpeedController[8];
-    //for(int i = 1; i < 9; i++) this.temp[i-1] = new Talon(i);
-    this.flags = new Flags();
-    this.sensors = new TestSensors();
-    
-    this.sensors.init();
-    this.forwardPidConfig = new ForwardConfiguration(this.sensors.gyro, this.sensors.average);
-    this.turnPidConfig = new TurnConfiguration(this.sensors.gyro);
-    
-    this.pdp = new PowerDistributionPanel();
-    
-    taskChooser.addDefault("LeftSwitchAuton", LeftSwitchAuton::new);
-    taskChooser.addObject("RightSwitchAuton", RightSwitchAuton::new);
-    taskChooser.addObject("CenterSwitchAuton", CenterSwitchAuton::new);
-    taskChooser.addObject("CrossBaselineAuton", CrossBaselineAuton::new);
-    SmartDashboard.putData("Autonomous2", taskChooser);
-  }
+		this.sensors.init();
+		this.flags.forwardPidConfig = new ForwardConfiguration(this.sensors.gyro, this.sensors.average);
+		this.flags.turnPidConfig = new TurnConfiguration(this.sensors.gyro);
 
-  @Override
-  public void autonomousInit() {
-    this.sensors.liftEncoder.reset();
-    this.sensors.leftEncoder.reset();
-    this.sensors.rightEncoder.reset();
-    this.sensors.gyro.reset();
-	this.switchStatus = DriverStation.getInstance().getGameSpecificMessage().charAt(0) == 'L';
-    this.autonomousTasks = new Task[]   {
-    		new RunSequentialTask(taskChooser.getSelected().get(), new AutonLiftTask(18, new LiftConfiguration(this.sensors.liftEncoder))
-        ), 
-    	new UpdateMotors(this.motors),
-        new RunEachFrameTask() {
-	      @Override
-	      protected void runEachFrame() {
-	        SmartDashboard.putNumber("Encoder Distance", sensors.leftEncoder.get());
-	        SmartDashboard.putNumber("Encoder Avg Distance", sensors.average.pidGet());
-	      }
-    	}
-    };
-    super.autonomousInit();
-  }
+		this.pdp = new PowerDistributionPanel();
 
-  @Override     
-  public void teleopInit() {
-    try {
-      this.sensors.liftEncoder.reset();
-      this.sensors.leftEncoder.reset();
-      this.sensors.rightEncoder.reset();
-      this.sensors.gyro.reset();
-    }catch(NullPointerException t) {
-      DriverStation.reportError("You didn't connect the gyro you dum dum", false);
-    }
-    this.teleopTasks = new Task[] {new ArcadeDrive(), new InTakeWheel(), new OutTakeWheel(), new LiftTask(), new RunEachFrameTask() {
+		taskChooser.addDefault("LeftSwitchAuton", LeftSwitchAuton::new);
+		taskChooser.addObject("RightSwitchAuton", RightSwitchAuton::new);
+		taskChooser.addObject("CenterSwitchAuton", CenterSwitchAuton::new);
+		taskChooser.addObject("CrossBaselineAuton", CrossBaselineAuton::new);
+		SmartDashboard.putData("Autonomous2", taskChooser);
+	}
 
-      @Override
-      protected void runEachFrame() {
-        //right Wing
-        double moveAmount =0;
-        if(Robot.instance.oi.xboxInput.B()) moveAmount += 1;
-        if(Robot.instance.oi.xboxInput.X()) moveAmount -= 1;
-        
-        Robot.instance.motors.rightWing.set(moveAmount);
-        
-        //left wing
-        moveAmount = 0;
-        if(Robot.instance.oi.xboxInput.Y()) moveAmount += 1;
-        if(Robot.instance.oi.xboxInput.A()) moveAmount -= 1;
-        
-        Robot.instance.motors.leftWing.set(moveAmount);
-        
-        
-        //Other Debug Code
-        SmartDashboard.putNumber("Encoder Distance", sensors.leftEncoder.get());
-        SmartDashboard.putNumber("Encoder Avg Distance", sensors.average.pidGet());
-        
-        for (int i : new int[] { 0, 1, 2, 3, 12, 13, 14, 15 }) {
-          SmartDashboard.putNumber("Current: " + i, pdp.getCurrent(i));
-        }        
-        
-          SmartDashboard.putNumber("Right Current", motors.rightBack.get());
-          SmartDashboard.putNumber("left Current", motors.leftBack.get());
-      SmartDashboard.putBoolean("intake", sensors.intake.get());
-      }
-      
-      
-      
-    }, new UpdateMotors(this.motors)};
-    
-    /*this.teleopTasks = new Task[] {
+	@Override
+	public void autonomousInit() {
+		this.sensors.liftEncoder.reset();
+		this.sensors.leftEncoder.reset();
+		this.sensors.rightEncoder.reset();
+		this.sensors.gyro.reset();
+		this.flags.gameMessage = DriverStation.getInstance().getGameSpecificMessage();
+		this.flags.switchStatus = this.flags.gameMessage.charAt(0) == 'L';
+		this.autonomousTasks = new Task[]   {
+				new RunSequentialTask(
+						taskChooser.getSelected().get(), 
+						new AutonLiftTask(18, new LiftConfiguration(this.sensors.liftEncoder))), 
+				new UpdateMotors(this.motors),
+				new EncoderReportTask()
+		};
+		super.autonomousInit();
+	}
+
+	@Override     
+	public void teleopInit() {
+		/** TODO: Tell Keval to put stuff here into seperate Tasks **/ 
+		try {
+			this.sensors.liftEncoder.reset();
+			this.sensors.leftEncoder.reset();
+			this.sensors.rightEncoder.reset();
+			this.sensors.gyro.reset();
+		}catch(NullPointerException t) {
+			DriverStation.reportError("You didn't connect the gyro you dum dum", false);
+		}
+		
+		
+		this.teleopTasks = new Task[] {new ArcadeDrive(), new InTakeWheel(), new OutTakeWheel(), new LiftTask(), new RunEachFrameTask() {
+
+			@Override
+			protected void runEachFrame() {
+				//right Wing
+				double moveAmount =0;
+				if(Robot.instance.oi.xboxInput.B()) moveAmount += 1;
+				if(Robot.instance.oi.xboxInput.X()) moveAmount -= 1;
+
+				Robot.instance.motors.rightWing.set(moveAmount);
+
+				//left wing
+				moveAmount = 0;
+				if(Robot.instance.oi.xboxInput.Y()) moveAmount += 1;
+				if(Robot.instance.oi.xboxInput.A()) moveAmount -= 1;
+
+				Robot.instance.motors.leftWing.set(moveAmount);
+
+
+				//Other Debug Code
+				SmartDashboard.putNumber("Encoder Distance", sensors.leftEncoder.get());
+				SmartDashboard.putNumber("Encoder Avg Distance", sensors.average.pidGet());
+
+				for (int i : new int[] { 0, 1, 2, 3, 12, 13, 14, 15 }) {
+					SmartDashboard.putNumber("Current: " + i, pdp.getCurrent(i));
+				}        
+
+				SmartDashboard.putNumber("Right Current", motors.rightBack.get());
+				SmartDashboard.putNumber("left Current", motors.leftBack.get());
+				SmartDashboard.putBoolean("intake", sensors.intake.get());
+			}
+
+
+
+		}, new UpdateMotors(this.motors)};
+
+		/*this.teleopTasks = new Task[] {
         new Task() {
           @Override
           public void runTask() {
@@ -172,22 +167,13 @@ public class Robot extends TaskRobot {
           }
         }
     };*/
-    super.teleopInit();
-  }
-  @Override
-  public void disabledInit() {
-    this.sensors.leftEncoder.reset();
-    this.sensors.rightEncoder.reset();
-    this.disabledTasks = new Task[] {new RunEachFrameTask() {
-
-      @Override
-      protected void runEachFrame() {
-        SmartDashboard.putNumber("Encoder Distance", sensors.leftEncoder.get());
-        SmartDashboard.putNumber("Encoder Avg Distance", sensors.average.pidGet());
-
-      }
-      
-    }};
-    super.disabledInit();
-  }
+		super.teleopInit();
+	}
+	@Override
+	public void disabledInit() {
+		this.sensors.leftEncoder.reset();
+		this.sensors.rightEncoder.reset();
+		this.disabledTasks = new Task[] {new EncoderReportTask()};
+		super.disabledInit();
+	}
 }

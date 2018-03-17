@@ -19,7 +19,7 @@ import com.saintsrobotics.hickoryhumpcamel.util.TurnConfiguration;
 
 		private static Task[] taskChoose() { 
 			List<Task> taskList = new ArrayList<Task>(); 
-			if(Robot.instance.switchStatus) {
+			if(Robot.instance.flags.switchStatus) {
 				taskList.add(new TurnToHeadingTask(-45, new TurnConfiguration(Robot.instance.sensors.gyro)));
 				taskList.add(new ForwardAtHeadingTask(-45, 3.4, new ForwardConfiguration(Robot.instance.sensors.gyro, Robot.instance.sensors.average)));
 				taskList.add(new TurnToHeadingTask(0, new TurnConfiguration(Robot.instance.sensors.gyro)));
