@@ -1,6 +1,7 @@
 package com.saintsrobotics.hickoryhumpcamel.output;
 
 import com.github.dozer.output.Motor;
+import com.github.dozer.output.MotorRamping;
 
 public abstract class RobotMotors extends Motors {
   public Motor leftDrive;
