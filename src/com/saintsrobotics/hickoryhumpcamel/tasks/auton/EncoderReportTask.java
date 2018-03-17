@@ -1,6 +1,5 @@
 package com.saintsrobotics.hickoryhumpcamel.tasks.auton;
 
-import com.github.dozer.coroutine.Task;
 import com.github.dozer.coroutine.helpers.RunEachFrameTask;
 import com.saintsrobotics.hickoryhumpcamel.Robot;
 

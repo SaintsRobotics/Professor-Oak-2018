@@ -2,22 +2,17 @@ package com.saintsrobotics.hickoryhumpcamel;
 
 import java.util.function.Supplier;
 
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.github.dozer.TaskRobot;
 import com.github.dozer.coroutine.Task;
-import com.github.dozer.coroutine.helpers.RunContinuousTask;
 import com.github.dozer.coroutine.helpers.RunEachFrameTask;
 import com.github.dozer.coroutine.helpers.RunSequentialTask;
-import com.github.dozer.output.Motor;
-import com.github.dozer.output.MotorSimple;
 import com.saintsrobotics.hickoryhumpcamel.input.OI;
 import com.saintsrobotics.hickoryhumpcamel.input.Sensors;
 import com.saintsrobotics.hickoryhumpcamel.input.TestSensors;
-import com.saintsrobotics.hickoryhumpcamel.output.*;
+import com.saintsrobotics.hickoryhumpcamel.output.RobotMotors;
+import com.saintsrobotics.hickoryhumpcamel.output.TestBotMotors;
 import com.saintsrobotics.hickoryhumpcamel.tasks.auton.AutonLiftTask;
 import com.saintsrobotics.hickoryhumpcamel.tasks.auton.EncoderReportTask;
-import com.saintsrobotics.hickoryhumpcamel.tasks.auton.ForwardAtHeadingTask;
-import com.saintsrobotics.hickoryhumpcamel.tasks.auton.TurnToHeadingTask;
 import com.saintsrobotics.hickoryhumpcamel.tasks.auton.choose.CenterSwitchAuton;
 import com.saintsrobotics.hickoryhumpcamel.tasks.auton.choose.CrossBaselineAuton;
 import com.saintsrobotics.hickoryhumpcamel.tasks.auton.choose.LeftSwitchAuton;
@@ -30,10 +25,9 @@ import com.saintsrobotics.hickoryhumpcamel.util.ForwardConfiguration;
 import com.saintsrobotics.hickoryhumpcamel.util.LiftConfiguration;
 import com.saintsrobotics.hickoryhumpcamel.util.TurnConfiguration;
 import com.saintsrobotics.hickoryhumpcamel.util.UpdateMotors;
+
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
-import edu.wpi.first.wpilibj.SpeedController;
-import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 

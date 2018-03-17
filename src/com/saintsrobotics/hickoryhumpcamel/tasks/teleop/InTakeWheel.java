@@ -1,10 +1,7 @@
 package com.saintsrobotics.hickoryhumpcamel.tasks.teleop;
 
-import com.saintsrobotics.hickoryhumpcamel.Robot;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import com.github.dozer.coroutine.Task;
 import com.github.dozer.coroutine.helpers.RunContinuousTask;
-import com.github.dozer.coroutine.helpers.RunEachFrameTask;
+import com.saintsrobotics.hickoryhumpcamel.Robot;
 
 
 public class InTakeWheel extends RunContinuousTask {

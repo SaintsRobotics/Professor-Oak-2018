@@ -1,9 +1,9 @@
 package com.saintsrobotics.hickoryhumpcamel.tasks.teleop;
 
-import com.saintsrobotics.hickoryhumpcamel.Robot;
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import com.github.dozer.coroutine.helpers.RunEachFrameTask;
+import com.saintsrobotics.hickoryhumpcamel.Robot;
+
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 
 public class LiftTask extends RunEachFrameTask {
