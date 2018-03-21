@@ -1,10 +1,8 @@
 package com.saintsrobotics.hickoryhumpcamel.tasks.auton;
 
-import com.saintsrobotics.hickoryhumpcamel.Robot;
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.Encoder;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import com.github.dozer.coroutine.Task;
+import com.saintsrobotics.hickoryhumpcamel.Robot;
+import edu.wpi.first.wpilibj.Encoder;
 
 //to stop at angle of 45, go up 10 inches
 public class AutonLiftTask extends Task {

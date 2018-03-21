@@ -12,6 +12,7 @@ import com.saintsrobotics.hickoryhumpcamel.input.TestSensors;
 import com.saintsrobotics.hickoryhumpcamel.output.RobotMotors;
 import com.saintsrobotics.hickoryhumpcamel.output.TestBotMotors;
 import com.saintsrobotics.hickoryhumpcamel.tasks.auton.AutonLiftTask;
+import com.saintsrobotics.hickoryhumpcamel.tasks.auton.EncoderReportTask;
 import com.saintsrobotics.hickoryhumpcamel.tasks.auton.choose.CenterSwitchAuton;
 import com.saintsrobotics.hickoryhumpcamel.tasks.auton.choose.CrossBaselineAuton;
 import com.saintsrobotics.hickoryhumpcamel.tasks.auton.choose.LeftSwitchAuton;
@@ -83,13 +84,7 @@ public class Robot extends TaskRobot {
     this.autonomousTasks = new Task[]   {
         new RunSequentialTask(taskChooser.getSelected().get(), new AutonLiftTask(10, Robot.instance.sensors.liftEncoder)),
     	new UpdateMotors(this.motors),
-        new RunEachFrameTask() {
-	      @Override
-	      protected void runEachFrame() {
-	        SmartDashboard.putNumber("Encoder Distance", sensors.leftEncoder.get());
-	        SmartDashboard.putNumber("Encoder Avg Distance", sensors.average.pidGet());
-	      }
-    	}
+        new EncoderReportTask()
     };
     super.autonomousInit();
   }
@@ -164,17 +159,7 @@ public class Robot extends TaskRobot {
   public void disabledInit() {
     //this.sensors.leftEncoder.reset();
     //this.sensors.rightEncoder.reset();
-    this.disabledTasks = new Task[] {new RunEachFrameTask() {
-
-      @Override
-      protected void runEachFrame() {
-        SmartDashboard.putNumber("Left Encoder Distance", sensors.leftEncoder.get());
-        SmartDashboard.putNumber("Right Encoder Distance", sensors.rightEncoder.get());
-        SmartDashboard.putNumber("Encoder Avg Distance", sensors.average.pidGet());
-
-      }
-      
-    }};
+    this.disabledTasks = new Task[] {new EncoderReportTask()};
     super.disabledInit();
   }
 }

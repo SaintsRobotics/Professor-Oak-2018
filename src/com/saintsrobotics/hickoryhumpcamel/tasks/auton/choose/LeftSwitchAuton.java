@@ -3,14 +3,11 @@ package com.saintsrobotics.hickoryhumpcamel.tasks.auton.choose;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Supplier;
-
 import com.github.dozer.coroutine.Task;
 import com.github.dozer.coroutine.helpers.RunSequentialTask;
 import com.saintsrobotics.hickoryhumpcamel.Robot;
 import com.saintsrobotics.hickoryhumpcamel.tasks.auton.ForwardAtHeadingTask;
 import com.saintsrobotics.hickoryhumpcamel.tasks.auton.TurnToHeadingTask;
-import com.saintsrobotics.hickoryhumpcamel.util.ForwardConfiguration;
-import com.saintsrobotics.hickoryhumpcamel.util.TurnConfiguration;
 
 
 

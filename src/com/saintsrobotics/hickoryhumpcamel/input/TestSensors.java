@@ -8,7 +8,6 @@ import com.saintsrobotics.hickoryhumpcamel.util.TurnConfiguration;
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Encoder;
-import edu.wpi.first.wpilibj.PIDSourceType;
 
 public class TestSensors extends Sensors {
 
