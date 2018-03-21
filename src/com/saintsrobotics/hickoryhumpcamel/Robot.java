@@ -1,24 +1,17 @@
 package com.saintsrobotics.hickoryhumpcamel;
 
 import java.util.function.Supplier;
-
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.github.dozer.TaskRobot;
 import com.github.dozer.coroutine.Task;
-import com.github.dozer.coroutine.helpers.RunContinuousTask;
 import com.github.dozer.coroutine.helpers.RunEachFrameTask;
 import com.github.dozer.coroutine.helpers.RunParallelTask;
 import com.github.dozer.coroutine.helpers.RunSequentialTask;
-import com.github.dozer.output.Motor;
-import com.github.dozer.output.MotorSimple;
 import com.saintsrobotics.hickoryhumpcamel.input.OI;
 import com.saintsrobotics.hickoryhumpcamel.input.Sensors;
 import com.saintsrobotics.hickoryhumpcamel.input.TestSensors;
-import com.saintsrobotics.hickoryhumpcamel.output.*;
+import com.saintsrobotics.hickoryhumpcamel.output.RobotMotors;
+import com.saintsrobotics.hickoryhumpcamel.output.TestBotMotors;
 import com.saintsrobotics.hickoryhumpcamel.tasks.auton.AutonLiftTask;
-import com.saintsrobotics.hickoryhumpcamel.tasks.auton.ForwardAtHeadingTask;
-import com.saintsrobotics.hickoryhumpcamel.tasks.auton.SimpleMoveForward;
-import com.saintsrobotics.hickoryhumpcamel.tasks.auton.TurnToHeadingTask;
 import com.saintsrobotics.hickoryhumpcamel.tasks.auton.choose.CenterSwitchAuton;
 import com.saintsrobotics.hickoryhumpcamel.tasks.auton.choose.CrossBaselineAuton;
 import com.saintsrobotics.hickoryhumpcamel.tasks.auton.choose.LeftSwitchAuton;
@@ -34,8 +27,6 @@ import com.saintsrobotics.hickoryhumpcamel.util.TurnConfiguration;
 import com.saintsrobotics.hickoryhumpcamel.util.UpdateMotors;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
-import edu.wpi.first.wpilibj.SpeedController;
-import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -54,12 +45,8 @@ public class Robot extends TaskRobot {
   public OI oi;
   public Flags flags;
   public Sensors sensors;
-  public ForwardConfiguration forwardPidConfig;
-  public TurnConfiguration turnPidConfig;
-  //public SpeedController[] temp;
-  public PowerDistributionPanel pdp;
+
   public static Robot instance;
-  public boolean switchStatus; //left True right False
 
   @Override
   public void robotInit() {
@@ -73,10 +60,10 @@ public class Robot extends TaskRobot {
     this.sensors = new TestSensors();
     
     this.sensors.init();
-    this.forwardPidConfig = new ForwardConfiguration(this.sensors.gyro, this.sensors.average);
-    this.turnPidConfig = new TurnConfiguration(this.sensors.gyro);
+    this.flags.forwardPidConfig = new ForwardConfiguration(this.sensors.gyro, this.sensors.average);
+    this.flags.turnPidConfig = new TurnConfiguration(this.sensors.gyro);
     
-    this.pdp = new PowerDistributionPanel();
+    this.flags.pdp = new PowerDistributionPanel();
     
     taskChooser.addDefault("LeftSwitchAuton", LeftSwitchAuton::new);
     taskChooser.addObject("RightSwitchAuton", RightSwitchAuton::new);
@@ -92,7 +79,7 @@ public class Robot extends TaskRobot {
     this.sensors.rightEncoder.reset();
     this.sensors.gyro.reset();
 	this.flags.gameMessage =  DriverStation.getInstance().getGameSpecificMessage(); 
-    this.switchStatus = this.flags.gameMessage.charAt(0) == 'L';
+    this.flags.switchStatus = this.flags.gameMessage.charAt(0) == 'L';
     this.autonomousTasks = new Task[]   {
         new RunSequentialTask(taskChooser.getSelected().get(), new AutonLiftTask(10, Robot.instance.sensors.liftEncoder)),
     	new UpdateMotors(this.motors),
@@ -137,7 +124,7 @@ public class Robot extends TaskRobot {
         SmartDashboard.putNumber("Encoder Avg Distance", sensors.average.pidGet());
         
         for (int i : new int[] { 0, 1, 2, 3, 12, 13, 14, 15 }) {
-          SmartDashboard.putNumber("Current: " + i, pdp.getCurrent(i));
+          SmartDashboard.putNumber("Current: " + i, Robot.instance.flags.pdp.getCurrent(i));
         }        
         
           SmartDashboard.putNumber("Right Current", motors.rightBack.get());

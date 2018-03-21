@@ -22,7 +22,7 @@ public class LeftSwitchAuton extends RunSequentialTask implements Supplier<Task>
 
 	private static Task[] taskChoose() { 
 		List<Task> taskList = new ArrayList<Task>(); 
-		if(Robot.instance.switchStatus) {
+		if(Robot.instance.flags.switchStatus) {
 		    //goes to left
 			taskList.add(new ForwardAtHeadingTask(0, 27.5, Robot.instance.sensors.forwardConfig));
 			taskList.add(new TurnToHeadingTask(-45, Robot.instance.sensors.turnConfig));
