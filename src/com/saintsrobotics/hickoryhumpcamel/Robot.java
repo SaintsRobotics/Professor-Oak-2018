@@ -94,7 +94,7 @@ public class Robot extends TaskRobot {
 	this.flags.gameMessage =  DriverStation.getInstance().getGameSpecificMessage(); 
     this.switchStatus = this.flags.gameMessage.charAt(0) == 'L';
     this.autonomousTasks = new Task[]   {
-        new RunSequentialTask(taskChooser.getSelected().get(), new AutonLiftTask(18, Robot.instance.sensors.liftEncoder)),
+        new RunSequentialTask(taskChooser.getSelected().get(), new AutonLiftTask(10, Robot.instance.sensors.liftEncoder)),
     	new UpdateMotors(this.motors),
         new RunEachFrameTask() {
 	      @Override

@@ -1,16 +1,12 @@
 package com.saintsrobotics.hickoryhumpcamel.tasks.auton;
 
 import com.saintsrobotics.hickoryhumpcamel.Robot;
-import com.saintsrobotics.hickoryhumpcamel.util.PIDReceiver;
-import com.saintsrobotics.hickoryhumpcamel.util.DistanceEncoder;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Encoder;
-import edu.wpi.first.wpilibj.PIDController;
-import edu.wpi.first.wpilibj.PIDSource;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import com.github.dozer.coroutine.Task;
 
-
+//to stop at angle of 45, go up 10 inches
 public class AutonLiftTask extends Task {
   private double distance;
   private Encoder liftEncoder;
@@ -18,12 +14,13 @@ public class AutonLiftTask extends Task {
   public AutonLiftTask(double distance, Encoder liftEncoder) {
     this.distance = distance;
     this.liftEncoder = liftEncoder;
-    
-    Robot.instance.motors.lifter.set(0.2);
   }
   
   @Override
   protected void runTask() {
+    while(this.liftEncoder.getDistance() != this.distance) {
+      Robot.instance.motors.lifter.set(0.2);
+    }
     Robot.instance.motors.intake.set(-1);
     wait.forSeconds(2);
     Robot.instance.motors.intake.stop();
