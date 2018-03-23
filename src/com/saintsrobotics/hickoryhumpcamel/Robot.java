@@ -18,6 +18,7 @@ import com.saintsrobotics.hickoryhumpcamel.tasks.auton.choose.CrossBaselineAuton
 import com.saintsrobotics.hickoryhumpcamel.tasks.auton.choose.LeftSwitchAuton;
 import com.saintsrobotics.hickoryhumpcamel.tasks.auton.choose.RightSwitchAuton;
 import com.saintsrobotics.hickoryhumpcamel.tasks.teleop.ArcadeDrive;
+import com.saintsrobotics.hickoryhumpcamel.tasks.teleop.GetValues;
 import com.saintsrobotics.hickoryhumpcamel.tasks.teleop.InTakeWheel;
 import com.saintsrobotics.hickoryhumpcamel.tasks.teleop.LiftTask;
 import com.saintsrobotics.hickoryhumpcamel.tasks.teleop.OutTakeWheel;
@@ -99,7 +100,7 @@ public class Robot extends TaskRobot {
     }catch(NullPointerException t) {
       DriverStation.reportError("You didn't connect the gyro you dum dum", false);
     }
-    this.teleopTasks = new Task[] {new ArcadeDrive(), new InTakeWheel(), new OutTakeWheel(), new LiftTask(), 
+    this.teleopTasks = new Task[] {new ArcadeDrive(), new InTakeWheel(), new OutTakeWheel(), new LiftTask(), new GetValues(),
         new RunSequentialTask(
             new WingsDropTask(),
             new RunParallelTask(
@@ -108,28 +109,13 @@ public class Robot extends TaskRobot {
             )
         ),
         
-        new RunEachFrameTask() {
+        
 
-      @Override
-      protected void runEachFrame() {
-        
-        //Other Debug Code
-        SmartDashboard.putNumber("Left Encoder Distance", sensors.leftEncoder.get());
-        SmartDashboard.putNumber("Right Encoder Distance", sensors.rightEncoder.get());
-        SmartDashboard.putNumber("Encoder Avg Distance", sensors.average.pidGet());
-        
-        for (int i : new int[] { 0, 1, 2, 3, 12, 13, 14, 15 }) {
-          SmartDashboard.putNumber("Current: " + i, Robot.instance.flags.pdp.getCurrent(i));
-        }        
-        
-          SmartDashboard.putNumber("Right Current", motors.rightBack.get());
-          SmartDashboard.putNumber("left Current", motors.leftBack.get());
-      SmartDashboard.putBoolean("intake", sensors.intake.get());
-      }
       
       
       
-    }, new UpdateMotors(this.motors)};
+      
+     new UpdateMotors(this.motors)};
     
     /*this.teleopTasks = new Task[] {
         new Task() {
