@@ -25,7 +25,9 @@ import com.saintsrobotics.hickoryhumpcamel.tasks.auton.choose.RightSwitchAuton;
 import com.saintsrobotics.hickoryhumpcamel.tasks.teleop.ArcadeDrive;
 import com.saintsrobotics.hickoryhumpcamel.tasks.teleop.InTakeWheel;
 import com.saintsrobotics.hickoryhumpcamel.tasks.teleop.LiftTask;
+import com.saintsrobotics.hickoryhumpcamel.tasks.teleop.MoveWingsTask;
 import com.saintsrobotics.hickoryhumpcamel.tasks.teleop.OutTakeWheel;
+import com.saintsrobotics.hickoryhumpcamel.tasks.teleop.GetDebugValues;
 import com.saintsrobotics.hickoryhumpcamel.util.ForwardConfiguration;
 import com.saintsrobotics.hickoryhumpcamel.util.LiftConfiguration;
 import com.saintsrobotics.hickoryhumpcamel.util.TurnConfiguration;
@@ -109,39 +111,13 @@ public class Robot extends TaskRobot {
 		}
 		
 		
-		this.teleopTasks = new Task[] {new ArcadeDrive(), new InTakeWheel(), new OutTakeWheel(), new LiftTask(), new RunEachFrameTask() {
+		this.teleopTasks = new Task[] {new ArcadeDrive(), new InTakeWheel(), new OutTakeWheel(), new LiftTask(), new MoveWingsTask(), new GetDebugValues(), new RunEachFrameTask() {
 
 			@Override
 			protected void runEachFrame() {
-				//right Wing
-				double moveAmount =0;
-				if(Robot.instance.oi.xboxInput.B()) moveAmount += 1;
-				if(Robot.instance.oi.xboxInput.X()) moveAmount -= 1;
-
-				Robot.instance.motors.rightWing.set(moveAmount);
-
-				//left wing
-				moveAmount = 0;
-				if(Robot.instance.oi.xboxInput.Y()) moveAmount += 1;
-				if(Robot.instance.oi.xboxInput.A()) moveAmount -= 1;
-
-				Robot.instance.motors.leftWing.set(moveAmount);
-
-
-				//Other Debug Code
-				SmartDashboard.putNumber("Encoder Distance", sensors.leftEncoder.get());
-				SmartDashboard.putNumber("Encoder Avg Distance", sensors.average.pidGet());
-
-				for (int i : new int[] { 0, 1, 2, 3, 12, 13, 14, 15 }) {
-					SmartDashboard.putNumber("Current: " + i, pdp.getCurrent(i));
-				}        
-
-				SmartDashboard.putNumber("Right Current", motors.rightBack.get());
-				SmartDashboard.putNumber("left Current", motors.leftBack.get());
-				SmartDashboard.putBoolean("intake", sensors.intake.get());
+			
+				
 			}
-
-
 
 		}, new UpdateMotors(this.motors)};
 
