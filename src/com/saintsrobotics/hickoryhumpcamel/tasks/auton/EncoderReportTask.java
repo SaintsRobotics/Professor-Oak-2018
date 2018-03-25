@@ -11,7 +11,7 @@ public class EncoderReportTask extends RunEachFrameTask {
     SmartDashboard.putNumber("Left Encoder Distance", Robot.instance.sensors.leftEncoder.get());
     SmartDashboard.putNumber("Right Encoder Distance", Robot.instance.sensors.rightEncoder.get());
     SmartDashboard.putNumber("Encoder Avg Distance", Robot.instance.sensors.average.pidGet());
-    
+    SmartDashboard.putNumber("Lift Height", Robot.instance.sensors.liftEncoder.getDistance());
   }
 
 }

@@ -85,8 +85,9 @@ public class Robot extends TaskRobot {
     this.flags.switchStatus = this.flags.gameMessage.charAt(0) == 'L';
     this.autonomousTasks = new Task[]   {
         new RunSequentialTask(
-            new RunParallelTask(taskChooser.getSelected().get()/*, new AutonLiftTask(10)*/), //CAreful with the lift during testing
-            new SpinOutTask()),
+            new RunParallelTask(/*taskChooser.getSelected().get()/*,*/ new AutonLiftTask(10.0/12.0)), //CAreful with the lift during testing
+            new SpinOutTask()
+        ),
     	new UpdateMotors(this.motors),
         new EncoderReportTask()
     };
