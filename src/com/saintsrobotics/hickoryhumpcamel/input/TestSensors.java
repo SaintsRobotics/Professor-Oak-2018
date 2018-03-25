@@ -14,10 +14,9 @@ public class TestSensors extends Sensors {
   @Override
   public void init() {
     this.gyro = new ADXRS450_Gyro();
-    //Original value 162.9 for inches
     this.leftEncoder = new Encoder(1, 2, true);
     this.rightEncoder = new Encoder(3, 4, false);
-    this.leftEncoder.setDistancePerPulse(1/167.0);
+    this.leftEncoder.setDistancePerPulse(1/167.0/*inches per pulse*/);
     this.rightEncoder.setDistancePerPulse(1/167.0);
     this.average = new AveragePIDSources(this.leftEncoder, this.rightEncoder,false, false);
     

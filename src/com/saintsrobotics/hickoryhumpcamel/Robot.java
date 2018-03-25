@@ -13,6 +13,7 @@ import com.saintsrobotics.hickoryhumpcamel.output.RobotMotors;
 import com.saintsrobotics.hickoryhumpcamel.output.TestBotMotors;
 import com.saintsrobotics.hickoryhumpcamel.tasks.auton.AutonLiftTask;
 import com.saintsrobotics.hickoryhumpcamel.tasks.auton.EncoderReportTask;
+import com.saintsrobotics.hickoryhumpcamel.tasks.auton.SpinOutTask;
 import com.saintsrobotics.hickoryhumpcamel.tasks.auton.choose.CenterSwitchAuton;
 import com.saintsrobotics.hickoryhumpcamel.tasks.auton.choose.CrossBaselineAuton;
 import com.saintsrobotics.hickoryhumpcamel.tasks.auton.choose.LeftSwitchAuton;
@@ -39,7 +40,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class Robot extends TaskRobot {
 	
-    private SendableChooser<Supplier<Task>> taskChooser = new SendableChooser<>();
+    private SendableChooser<Supplier<Task>> taskChooser;
 
 
   public RobotMotors motors;
@@ -52,6 +53,7 @@ public class Robot extends TaskRobot {
   @Override
   public void robotInit() {
     Robot.instance = this;
+    taskChooser = new SendableChooser<>();
     this.oi = new OI();
     this.motors = new TestBotMotors();
     this.motors.init();
@@ -82,7 +84,9 @@ public class Robot extends TaskRobot {
 	this.flags.gameMessage =  DriverStation.getInstance().getGameSpecificMessage(); 
     this.flags.switchStatus = this.flags.gameMessage.charAt(0) == 'L';
     this.autonomousTasks = new Task[]   {
-        new RunSequentialTask(taskChooser.getSelected().get(), new AutonLiftTask(10, Robot.instance.sensors.liftEncoder)),
+        new RunSequentialTask(
+            new RunParallelTask(taskChooser.getSelected().get()/*, new AutonLiftTask(10)*/), //CAreful with the lift during testing
+            new SpinOutTask()),
     	new UpdateMotors(this.motors),
         new EncoderReportTask()
     };
@@ -99,14 +103,7 @@ public class Robot extends TaskRobot {
     }catch(NullPointerException t) {
       DriverStation.reportError("You didn't connect the gyro you dum dum", false);
     }
-    this.teleopTasks = new Task[] {new ArcadeDrive(), new InTakeWheel(), new OutTakeWheel(), new LiftTask(), 
-        new RunSequentialTask(
-            new WingsDropTask(),
-            new RunParallelTask(
-                new WingsTask(motors.leftWing, WingsTask.leftIn, WingsTask.leftOut),
-                new WingsTask(motors.rightWing, WingsTask.rightIn, WingsTask.rightOut)
-            )
-        ),
+    this.teleopTasks = new Task[] {new ArcadeDrive(), new InTakeWheel(), new OutTakeWheel(), new LiftTask(),
         
         new RunEachFrameTask() {
 

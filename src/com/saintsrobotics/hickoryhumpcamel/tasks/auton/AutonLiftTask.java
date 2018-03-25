@@ -7,19 +7,15 @@ import edu.wpi.first.wpilibj.Encoder;
 //to stop at angle of 45, go up 10 inches
 public class AutonLiftTask extends Task {
   private double distance;
-  private Encoder liftEncoder;
 
-  public AutonLiftTask(double distance, Encoder liftEncoder) {
+  public AutonLiftTask(double distance) {
     this.distance = distance;
-    this.liftEncoder = liftEncoder;
   }
   
   @Override
   protected void runTask() {
     Robot.instance.motors.intake.set(0.2);
-    wait.until(() -> this.liftEncoder.getDistance() == this.distance);
-    Robot.instance.motors.intake.set(-1);
-    wait.forSeconds(2);
+    wait.until(() -> Robot.instance.sensors.liftEncoder.getDistance() >= this.distance);
     Robot.instance.motors.intake.stop();
 // NON EVENT CODE    
 //    while(this.liftEncoder.getDistance() != this.distance) {
