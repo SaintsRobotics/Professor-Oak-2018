@@ -19,7 +19,8 @@ import com.saintsrobotics.hickoryhumpcamel.tasks.auton.choose.CrossBaselineAuton
 import com.saintsrobotics.hickoryhumpcamel.tasks.auton.choose.LeftSwitchAuton;
 import com.saintsrobotics.hickoryhumpcamel.tasks.auton.choose.RightSwitchAuton;
 import com.saintsrobotics.hickoryhumpcamel.tasks.teleop.ArcadeDrive;
-import com.saintsrobotics.hickoryhumpcamel.tasks.teleop.InTakeWheel;
+import com.saintsrobotics.hickoryhumpcamel.tasks.teleop.InTakeWheelOppositeDirection;
+import com.saintsrobotics.hickoryhumpcamel.tasks.teleop.InTakeWheelSameDirection;
 import com.saintsrobotics.hickoryhumpcamel.tasks.teleop.LiftTask;
 import com.saintsrobotics.hickoryhumpcamel.tasks.teleop.OutTakeWheel;
 import com.saintsrobotics.hickoryhumpcamel.tasks.teleop.WingsDropTask;
@@ -104,7 +105,7 @@ public class Robot extends TaskRobot {
     }catch(NullPointerException t) {
       DriverStation.reportError("You didn't connect the gyro you dum dum", false);
     }
-    this.teleopTasks = new Task[] {new ArcadeDrive(), new InTakeWheel(), new OutTakeWheel(), new LiftTask(),
+    this.teleopTasks = new Task[] {new ArcadeDrive(), new InTakeWheelSameDirection(), new OutTakeWheel(), new LiftTask(), new InTakeWheelOppositeDirection(),
         
         new RunEachFrameTask() {
 

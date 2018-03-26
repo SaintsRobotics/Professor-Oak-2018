@@ -7,7 +7,7 @@ import com.github.dozer.coroutine.helpers.RunContinuousTask;
 import com.github.dozer.coroutine.helpers.RunEachFrameTask;
 
 
-public class InTakeWheel extends RunContinuousTask {
+public class InTakeWheelSameDirection extends RunContinuousTask {
 
   @Override
   protected void runForever() {
@@ -15,7 +15,6 @@ public class InTakeWheel extends RunContinuousTask {
     Robot.instance.motors.intake.set(1);
     wait.until(() -> !Robot.instance.oi.xboxInput.RB() || !Robot.instance.sensors.intake.get());
     Robot.instance.motors.intake.stop();
-    Robot.instance.motors.intake.set(0);
   }
 
 }

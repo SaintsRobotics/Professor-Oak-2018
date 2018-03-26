@@ -15,7 +15,7 @@ public class AutonLiftTask extends Task {
   @Override
   protected void runTask() {
     Robot.instance.motors.lifter.set(0.5);
-    wait.untilWithTimeout(() -> Robot.instance.sensors.liftEncoder.getDistance() >= this.distance, 2);
+    wait.untilWithTimeout(() -> Robot.instance.sensors.liftEncoder.getDistance() >= this.distance, 1.5);
     Robot.instance.motors.lifter.stop();
 // NON EVENT CODE    
 //    while(this.liftEncoder.getDistance() != this.distance) {

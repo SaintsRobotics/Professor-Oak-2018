@@ -14,7 +14,7 @@ public class LiftTask extends RunEachFrameTask {
     double movementAmount =
         Robot.instance.oi.xboxInput.rightTrigger() - Robot.instance.oi.xboxInput.leftTrigger();
     SmartDashboard.putNumber("LIFT", Robot.instance.sensors.liftEncoder.getDistance() );
-    if(Robot.instance.sensors.liftEncoder.getDistance() > 3.4 && movementAmount > 0.3) {
+    if(Robot.instance.sensors.liftEncoder.getDistance() > 2 && movementAmount > 0.3) {
       movementAmount = 0.3;
     }
     if(Robot.instance.sensors.liftEncoder.getDistance() < 0.3 && movementAmount < -0.3) {

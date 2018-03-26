@@ -12,7 +12,6 @@ public class OutTakeWheel extends RunContinuousTask {
     wait.until(()->Robot.instance.oi.xboxInput.LB() && !Robot.instance.oi.xboxInput.RB());
     Robot.instance.motors.intake.set(-1);
     wait.until(()->!Robot.instance.oi.xboxInput.LB() || Robot.instance.oi.xboxInput.RB());
-    Robot.instance.motors.intake.set(0);
     Robot.instance.motors.intake.stop();
   }
 }

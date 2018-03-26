@@ -6,6 +6,8 @@ public abstract class RobotMotors extends Motors {
   public Motor leftDrive;
   public Motor rightDrive;
   public Motor intake;
+  public Motor intakeRight;
+  public Motor intakeLeft;
   public Motor lifter;
   public Motor leftWing;
   public Motor rightWing;
