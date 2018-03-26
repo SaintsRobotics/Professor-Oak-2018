@@ -14,4 +14,5 @@ public class EncoderReportTask extends RunEachFrameTask {
     SmartDashboard.putNumber("Lift Height", Robot.instance.sensors.liftEncoder.getDistance());
   }
 
+
 }

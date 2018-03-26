@@ -2,6 +2,7 @@ package com.saintsrobotics.hickoryhumpcamel.output;
 
 import com.github.dozer.output.Motor;
 import com.github.dozer.output.MotorGroup;
+import com.github.dozer.output.MotorRamping;
 import com.github.dozer.output.MotorSimple;
 import edu.wpi.first.wpilibj.Talon;
 

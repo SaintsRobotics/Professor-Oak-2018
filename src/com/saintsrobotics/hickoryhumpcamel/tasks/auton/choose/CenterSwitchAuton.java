@@ -13,7 +13,6 @@ public class CenterSwitchAuton extends RunSequentialTask {
   public CenterSwitchAuton() {
     super(taskChoose());
   }
-
   private static Task[] taskChoose() {
     List<Task> taskList = new ArrayList<Task>();
     if (Robot.instance.flags.switchStatus) {

@@ -32,7 +32,6 @@ import com.saintsrobotics.hickoryhumpcamel.tasks.auton.TurnToHeadingTask;
 				taskList.add(new ForwardAtHeadingTask(45, 23.395, Robot.instance.sensors.forwardConfig));
 				taskList.add(new TurnToHeadingTask(90, Robot.instance.sensors.turnConfig));
 				taskList.add(new ForwardAtHeadingTask(90, 22.916, Robot.instance.sensors.forwardConfig));
-
 			}
 			else {
 			    //goes to right side of switch

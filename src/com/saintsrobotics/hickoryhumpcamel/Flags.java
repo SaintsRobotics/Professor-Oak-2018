@@ -5,8 +5,7 @@ import com.saintsrobotics.hickoryhumpcamel.util.TurnConfiguration;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 
 public class Flags {
-  public double liftEncoderValue; 
-  
+  public double liftEncoderValue;   
   public String gameMessage;
   public ForwardConfiguration forwardPidConfig;
   public TurnConfiguration turnPidConfig;

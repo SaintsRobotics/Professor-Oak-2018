@@ -1,8 +1,7 @@
 package com.saintsrobotics.hickoryhumpcamel.output;
 
-import java.lang.reflect.Field;
-import java.util.ArrayList;
 import java.util.List;
+
 import com.github.dozer.output.Motor;
 import com.github.dozer.output.MotorRamping;
 

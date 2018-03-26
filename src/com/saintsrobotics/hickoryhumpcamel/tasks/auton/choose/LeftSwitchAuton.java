@@ -30,7 +30,6 @@ public class LeftSwitchAuton extends RunSequentialTask implements Supplier<Task>
             taskList.add(new ForwardAtHeadingTask(45, 10, Robot.instance.sensors.forwardConfig));
             taskList.add(new TurnToHeadingTask(90, Robot.instance.sensors.turnConfig));
             taskList.add(new ForwardAtHeadingTask(90, 10, Robot.instance.sensors.forwardConfig));
-			
 		}
 		else {
 		    //goes to right
