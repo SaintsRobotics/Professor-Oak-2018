@@ -19,7 +19,7 @@ public class CenterSwitchAuton extends RunSequentialTask {
       // goes to left side of switch
       taskList.add(new ForwardAtHeadingTask(0, 3.5, Robot.instance.sensors.forwardConfig));
       taskList.add(new TurnToHeadingTask(-45, Robot.instance.sensors.turnConfig));
-      taskList.add(new ForwardAtHeadingTask(-45, 57.28 + 35.875, Robot.instance.sensors.forwardConfig));
+      taskList.add(new ForwardAtHeadingTask(-45, 57.28 + 34, Robot.instance.sensors.forwardConfig));
       taskList.add(new TurnToHeadingTask(0, Robot.instance.sensors.turnConfig));
       taskList.add(new ForwardAtHeadingTask(0, 30, Robot.instance.sensors.forwardConfig));
 

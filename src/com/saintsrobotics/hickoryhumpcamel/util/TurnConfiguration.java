@@ -19,7 +19,7 @@ public class TurnConfiguration {
     this.turnHeadingKD = prefs.getDouble("turnHeadingKD", 0.1405);
     DriverStation.reportWarning("Turn heading KP" + this.turnHeadingKP, false);
 
-    this.turnHeadingTolerance = 3;
+    this.turnHeadingTolerance = 5;
     this.gyro = gyro;
   }
 

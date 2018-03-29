@@ -33,7 +33,7 @@ public class ForwardAtHeadingTask extends Task {
     this.distancePidController = new PIDController(pidConfig.forwardDistanceKP,
         pidConfig.forwardDistanceKI, pidConfig.forwardDistanceKD, average, distancePidReceiver);
     this.distancePidController.setAbsoluteTolerance(pidConfig.forwardDistanceTolerance);
-    this.distancePidController.setOutputRange(-0.3, 0.3);
+    this.distancePidController.setOutputRange(-0.5, 0.5 );
   }
 
   @Override

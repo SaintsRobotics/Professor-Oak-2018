@@ -22,7 +22,7 @@ public class TurnToHeadingTask extends Task {
     this.headingPidController = new PIDController(pidConfig.turnHeadingKP, pidConfig.turnHeadingKI,
         pidConfig.turnHeadingKD, gyro, headingPidReceiver);
     this.headingPidController.setAbsoluteTolerance(pidConfig.turnHeadingTolerance);
-    this.headingPidController.setOutputRange(-0.6, 0.6);
+    this.headingPidController.setOutputRange(-0.7, 0.7);
   }
 
   @Override
@@ -32,7 +32,7 @@ public class TurnToHeadingTask extends Task {
     DriverStation.reportError("Start : " + this.gyro.pidGet(), false);
     this.headingPidController.enable();
     int frameCount = 0;
-    while (frameCount < 50) {
+    while (frameCount < 30) {
       double headingOutput = this.headingPidReceiver.getOutput();
       SmartDashboard.putNumber("Gyro Angle", this.gyro.pidGet());
       SmartDashboard.putNumber("Gyro Pid Driving", headingOutput);
