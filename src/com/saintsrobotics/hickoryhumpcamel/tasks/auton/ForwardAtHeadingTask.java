@@ -27,7 +27,7 @@ public class ForwardAtHeadingTask extends Task {
     this.headingPidReceiver = new PIDReceiver();
     this.headingPidController = new PIDController(pidConfig.forwardHeadingKP,
         pidConfig.forwardHeadingKI, pidConfig.forwardHeadingKD, gyro, headingPidReceiver);
-    //this.headingPidController.setAbsoluteTolerance(pidConfig.forwardHeadingTolerance);
+    this.headingPidController.setAbsoluteTolerance(pidConfig.forwardHeadingTolerance);
     this.headingPidController.setOutputRange(-0.5, 0.5);
     this.distancePidReceiver = new PIDReceiver();
     this.distancePidController = new PIDController(pidConfig.forwardDistanceKP,

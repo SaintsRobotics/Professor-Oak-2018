@@ -13,6 +13,7 @@ import com.saintsrobotics.hickoryhumpcamel.output.RobotMotors;
 import com.saintsrobotics.hickoryhumpcamel.output.TestBotMotors;
 import com.saintsrobotics.hickoryhumpcamel.tasks.auton.AutonLiftTask;
 import com.saintsrobotics.hickoryhumpcamel.tasks.auton.EncoderReportTask;
+import com.saintsrobotics.hickoryhumpcamel.tasks.auton.SimpleMoveForward;
 import com.saintsrobotics.hickoryhumpcamel.tasks.auton.SpinOutTask;
 import com.saintsrobotics.hickoryhumpcamel.tasks.auton.choose.CenterSwitchAuton;
 import com.saintsrobotics.hickoryhumpcamel.tasks.auton.choose.CrossBaselineAuton;
@@ -85,10 +86,11 @@ public class Robot extends TaskRobot {
 	this.flags.gameMessage =  DriverStation.getInstance().getGameSpecificMessage(); 
     this.flags.switchStatus = this.flags.gameMessage.charAt(0) == 'L';
     this.autonomousTasks = new Task[]   {
-        new RunSequentialTask(
-            new RunParallelTask(/*taskChooser.getSelected().get()/*,*/ new AutonLiftTask(10.0/12.0)), //CAreful with the lift during testing
+        new SimpleMoveForward(),
+        /*new RunSequentialTask(
+            new RunParallelTask(taskChooser.getSelected().get(), new AutonLiftTask(10.0/12.0)), //CAreful with the lift during testing
             new SpinOutTask()
-        ),
+        ),*/
     	new UpdateMotors(this.motors),
         new EncoderReportTask()
     };
