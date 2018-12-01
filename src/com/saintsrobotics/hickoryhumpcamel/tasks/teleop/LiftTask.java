@@ -1,34 +1,36 @@
 package com.saintsrobotics.hickoryhumpcamel.tasks.teleop;
 
 import com.saintsrobotics.hickoryhumpcamel.Robot;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import com.github.dozer.coroutine.helpers.RunEachFrameTask;
 
 
 public class LiftTask extends RunEachFrameTask {
-    private long startTime;
-    
-    public LiftTask() {
-    	this.startTime = System.currentTimeMillis();
+
+  @Override
+  protected void runEachFrame() {
+    Robot.instance.flags.liftEncoderValue = Robot.instance.sensors.liftEncoder.getDistance();
+    double movementAmount =
+        Robot.instance.oi.xboxInput.rightTrigger() - Robot.instance.oi.xboxInput.leftTrigger();
+    SmartDashboard.putNumber("LIFT", Robot.instance.sensors.liftEncoder.getDistance() );
+    double speed = 0.3;
+    if(Robot.instance.sensors.liftEncoder.getDistance() > 2 && movementAmount > 0.3) {
+      movementAmount = 0.2;
     }
-   
+    if(Robot.instance.sensors.liftEncoder.getDistance() < 0.3 && movementAmount < -0.3) {
+      movementAmount = -0.3;
+    }
+    if (!Robot.instance.sensors.lifterUp.get() && movementAmount > 0) {
+      movementAmount = 0;
+      Robot.instance.motors.lifter.stop();
+    }
+    if (!Robot.instance.sensors.lifterDown.get() && movementAmount < 0) {
+      movementAmount = 0;
+      Robot.instance.sensors.liftEncoder.reset();
+      Robot.instance.motors.lifter.stop();
+    }
+    Robot.instance.motors.lifter.set(movementAmount+0.05);
     
-    @Override
-    protected void runEachFrame() {
-        double Rightamount = Robot.instance.oi.xboxInput.rightTrigger(); 
-        double Leftamount = Robot.instance.oi.xboxInput.leftTrigger(); 
-        double currentAmount = Robot.instance.servos.lifter.getAngle();
-        long currentTime = System.currentTimeMillis();
-        long timeDifference = currentTime-startTime;
-        if (Rightamount > 0 && Robot.instance.sensors.lifterUp.get() != true) {
-        
-        Robot.instance.servos.lifter.setPosition(currentAmount+Rightamount*timeDifference);
-        	
-        }
-        if (Leftamount > 0 && Robot.instance.sensors.lifterDown.get() != true) {
-        	Robot.instance.servos.lifter.setPosition(currentAmount-Leftamount*timeDifference);
-        }
-        	
-    	this.startTime = currentTime;
-    
-}
+  }
 }
